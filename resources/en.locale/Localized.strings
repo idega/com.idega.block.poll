@@ -1,0 +1,27 @@
+#Wed Mar 05 15:51:14 CET 2003
+poll_answer_editor=Poll Answer Editor
+end_date=End date\:
+answers=Answers
+start_date=Start date\:
+no_text=No answer entered
+no_question=No question selected
+choose_poll_question=Choose Question
+iw.component.com.idega.block.poll.presentation.Poll.name=Poll
+vote=Vote
+poll_question_chooser=Poll Question Chooser
+no_access=Login first\!
+lst=Last
+question=Question
+close=Close
+no_text_in_language=No text in this language
+answer=Answer
+next=Next
+edit=Edit
+results=Results
+poll_admin=Poll Admin
+locale=Locale
+save=Save
+poll_question_editor=Poll Question Editor
+information=Information
+older_polls=Older polls
+questions=Questions
