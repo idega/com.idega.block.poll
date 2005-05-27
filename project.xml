@@ -5,11 +5,17 @@
   <pomVersion>3</pomVersion>
   <name>idegaWeb Poll Block</name>
   <artifactId>com.idega.block.poll</artifactId>
-  <currentVersion>1.0.1</currentVersion>
-  <!--currentVersion>1.0-SNAPSHOT</currentVersion-->
+  <!--currentVersion>1.0.1</currentVersion-->
+  <currentVersion>1.0-SNAPSHOT</currentVersion>
+
   <inceptionYear>2000</inceptionYear>
   <shortDescription>Poll</shortDescription>
   <versions>
+    <version>
+      <id>1.0.1</id>
+      <name>1.0.1</name>
+      <tag>POLL_1_0_1</tag>
+    </version>
   </versions>
   <branches/>
   <developers>
@@ -46,23 +52,29 @@
     <dependency>
       <groupId>bundles</groupId>
       <artifactId>com.idega.core</artifactId>
-      <!--HELPER--><version>3.0.5</version><!--HELPER-->
-      <!--HELPERversion>SNAPSHOT</versionHELPER-->
+      <!--version>3.0.5</version-->
+      <version>SNAPSHOT</version>
+
       <type>jar</type>
       <url>http://www.idega.com/</url>
       <properties>
-        <j:if test="${idegaweb.project.source.dependent}=='true'}"><eclipse.dependency>true</eclipse.dependency></j:if>
+        <j:if test="${idegaweb.project.source.dependent}==&apos;true&apos;}">
+          <eclipse.dependency>true</eclipse.dependency>
+        </j:if>
       </properties>
     </dependency>
     <dependency>
       <groupId>bundles</groupId>
       <artifactId>com.idega.block.text</artifactId>
-      <!--HELPER--><version>1.0.1</version><!--HELPER-->
-      <!--HELPERversion>SNAPSHOT</versionHELPER-->
+      <!--version>1.0.1</version-->
+      <version>SNAPSHOT</version>
+
       <type>jar</type>
       <url>http://www.idega.com/</url>
       <properties>
-        <j:if test="${idegaweb.project.source.dependent}=='true'}"><eclipse.dependency>true</eclipse.dependency></j:if>
+        <j:if test="${idegaweb.project.source.dependent}==&apos;true&apos;}">
+          <eclipse.dependency>true</eclipse.dependency>
+        </j:if>
       </properties>
     </dependency>
   </dependencies>
