@@ -58,7 +58,7 @@
       <type>jar</type>
       <url>http://www.idega.com/</url>
       <properties>
-        <j:if test="${idegaweb.project.source.dependent}==&apos;true&apos;}">
+        <j:if test="${idegaweb.project.source.dependent}=='true'}">
           <eclipse.dependency>true</eclipse.dependency>
         </j:if>
       </properties>
@@ -72,7 +72,7 @@
       <type>jar</type>
       <url>http://www.idega.com/</url>
       <properties>
-        <j:if test="${idegaweb.project.source.dependent}==&apos;true&apos;}">
+        <j:if test="${idegaweb.project.source.dependent}=='true'}">
           <eclipse.dependency>true</eclipse.dependency>
         </j:if>
       </properties>
