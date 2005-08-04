@@ -16,55 +16,6 @@
       <value>
         <map>
           <key>
-            <name>:method:1:implied:void:setQuestionStyle:java.lang.String:</name>
-            <value>
-              <map>
-                <key>
-                  <name>iw_method_params</name>
-                  <value>
-                    <map>
-                      <key>
-                        <name>0</name>
-                        <value>
-                          <map>
-                            <key>
-                              <name>iw_method_param_handler</name>
-                              <type>java.lang.String</type>
-                              <value>com.idega.builder.handler.FontStyleHandler</value>
-                            </key>
-                            <key>
-                              <name>iw_method_param_desc</name>
-                              <type>java.lang.String</type>
-                              <value>Question style</value>
-                            </key>
-                          </map>
-                        </value>
-                        <type>map</type>
-                      </key>
-                    </map>
-                  </value>
-                  <type>map</type>
-                </key>
-                <key>
-                  <name>iw_method_option_multiv</name>
-                  <type>java.lang.Boolean</type>
-                  <value>false</value>
-                </key>
-                <key>
-                  <name>iw_method_description</name>
-                  <type>java.lang.String</type>
-                  <value>Question style</value>
-                </key>
-                <key>
-                  <name>iw_method_identifier</name>
-                  <type>java.lang.String</type>
-                  <value>:method:1:implied:void:setQuestionStyle:java.lang.String:</value>
-                </key>
-              </map>
-            </value>
-            <type>map</type>
-          </key>
-          <key>
             <name>:method:1:implied:void:setNumberOfShownPolls:int:</name>
             <value>
               <map>
@@ -108,55 +59,6 @@
                   <name>iw_method_identifier</name>
                   <type>java.lang.String</type>
                   <value>:method:1:implied:void:setNumberOfShownPolls:int:</value>
-                </key>
-              </map>
-            </value>
-            <type>map</type>
-          </key>
-          <key>
-            <name>:method:1:implied:void:setStyle:java.lang.String:</name>
-            <value>
-              <map>
-                <key>
-                  <name>iw_method_params</name>
-                  <value>
-                    <map>
-                      <key>
-                        <name>0</name>
-                        <value>
-                          <map>
-                            <key>
-                              <name>iw_method_param_handler</name>
-                              <type>java.lang.String</type>
-                              <value>com.idega.builder.handler.FontStyleHandler</value>
-                            </key>
-                            <key>
-                              <name>iw_method_param_desc</name>
-                              <type>java.lang.String</type>
-                              <value>Style</value>
-                            </key>
-                          </map>
-                        </value>
-                        <type>map</type>
-                      </key>
-                    </map>
-                  </value>
-                  <type>map</type>
-                </key>
-                <key>
-                  <name>iw_method_option_multiv</name>
-                  <type>java.lang.Boolean</type>
-                  <value>false</value>
-                </key>
-                <key>
-                  <name>iw_method_description</name>
-                  <type>java.lang.String</type>
-                  <value>Style</value>
-                </key>
-                <key>
-                  <name>iw_method_identifier</name>
-                  <type>java.lang.String</type>
-                  <value>:method:1:implied:void:setStyle:java.lang.String:</value>
                 </key>
               </map>
             </value>
@@ -555,55 +457,6 @@
             <type>map</type>
           </key>
           <key>
-            <name>:method:1:implied:void:setHoverStyle:java.lang.String:</name>
-            <value>
-              <map>
-                <key>
-                  <name>iw_method_params</name>
-                  <value>
-                    <map>
-                      <key>
-                        <name>0</name>
-                        <value>
-                          <map>
-                            <key>
-                              <name>iw_method_param_handler</name>
-                              <type>java.lang.String</type>
-                              <value>com.idega.builder.handler.FontStyleHandler</value>
-                            </key>
-                            <key>
-                              <name>iw_method_param_desc</name>
-                              <type>java.lang.String</type>
-                              <value>Style - hover</value>
-                            </key>
-                          </map>
-                        </value>
-                        <type>map</type>
-                      </key>
-                    </map>
-                  </value>
-                  <type>map</type>
-                </key>
-                <key>
-                  <name>iw_method_option_multiv</name>
-                  <type>java.lang.Boolean</type>
-                  <value>false</value>
-                </key>
-                <key>
-                  <name>iw_method_description</name>
-                  <type>java.lang.String</type>
-                  <value>Style - hover</value>
-                </key>
-                <key>
-                  <name>iw_method_identifier</name>
-                  <type>java.lang.String</type>
-                  <value>:method:1:implied:void:setHoverStyle:java.lang.String:</value>
-                </key>
-              </map>
-            </value>
-            <type>map</type>
-          </key>
-          <key>
             <name>:method:1:implied:void:setLinkOverImage:com.idega.presentation.Image:</name>
             <value>
               <map>
@@ -805,7 +658,7 @@
             <type>map</type>
           </key>
           <key>
-            <name>:method:1:implied:void:setBlockLayerStyleClass:java.lang.String:</name>
+            <name>:method:1:implied:void:setMainStyleClass:java.lang.String:</name>
             <value>
               <map>
                 <key>
@@ -829,7 +682,7 @@
                             <key>
                               <name>iw_method_param_desc</name>
                               <type>java.lang.String</type>
-                              <value>Block Layer Style Class</value>
+                              <value>Main style class</value>
                             </key>
                           </map>
                         </value>
@@ -847,12 +700,12 @@
                 <key>
                   <name>iw_method_description</name>
                   <type>java.lang.String</type>
-                  <value>Block Layer Style Class</value>
+                  <value>Main style class</value>
                 </key>
                 <key>
                   <name>iw_method_identifier</name>
                   <type>java.lang.String</type>
-                  <value>:method:1:implied:void:setBlockLayerStyleClass:java.lang.String:</value>
+                  <value>:method:1:implied:void:setMainStyleClass:java.lang.String:</value>
                 </key>
               </map>
             </value>
