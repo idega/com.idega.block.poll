@@ -1,0 +1,16 @@
+/* 
+this is default stylesheet for poll block 
+*/
+
+.poll {}
+
+.poll .percentageBar {
+	width: 50%;  
+	border: 1px solid black;
+}
+
+.poll .percentageLevel{
+	height: 10px; 
+	border: none; 
+	background: navy;
+}
