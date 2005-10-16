@@ -1,4 +1,3 @@
-#Fri Oct 24 12:54:49 CEST 2003
 answer=Svar
 answers=Sv\u00F6r
 choose_poll_question=Velja spurningu
@@ -7,6 +6,7 @@ edit=Redigera
 end_date=Lokadagur\:
 information=Information
 iw.component.com.idega.block.poll.presentation.Poll.name=Poll
+iw.component.com.idega.block.poll.presentation.Poll2.name=Poll2
 locale=Tungum\u00E1l
 lst=Fyrri
 next=N\u00E6stu

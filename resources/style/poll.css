@@ -2,7 +2,12 @@
 this is default stylesheet for poll block 
 */
 
-.poll {}
+.poll {
+    border: none;		
+	margin: 0;
+	padding: 0;
+	padding-bottom: 1em;
+}
 
 .poll .percentageBar {
 	width: 50%;  
@@ -13,4 +18,42 @@ this is default stylesheet for poll block
 	height: 10px; 
 	border: none; 
 	background: navy;
+}
+
+
+
+.poll ul {
+	list-style:none;
+}
+
+.poll ul li a {
+	font-size: 0.7em;
+	color: #595858;	
+	font-weight: normal;	
+}
+
+.poll ul li {
+    padding: 0;
+    margin-bottom: 0em;	
+}
+
+.poll ul li p {
+    margin-top: 2px;
+    margin-bottom: 2px;
+    font-weight: normal;
+}
+
+.poll p {
+	margin: 8px 0;
+	color: #595858;
+	font-size: 0.7em;
+	font-weight: bold;
+}
+
+.poll p.percent {
+	margin-bottom: .5em;
+}
+
+.poll div.percentageLevel {
+	font-size: 0;
 }
