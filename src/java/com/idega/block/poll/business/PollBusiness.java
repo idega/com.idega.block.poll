@@ -491,7 +491,7 @@ public static final String COOKIE_NAME = "idegaPOLL_";
 
   public static boolean canVote(IWContext iwc, int pollQuestionID) {
 
-    Cookie[] cookies = (Cookie[]) iwc.getCookies();
+    Cookie[] cookies = iwc.getCookies();
 
     boolean returner = true;
 
