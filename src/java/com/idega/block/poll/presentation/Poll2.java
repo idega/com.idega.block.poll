@@ -305,6 +305,7 @@ public class Poll2 extends Block implements Builderaware {
 			if (answers != null) {
 				for (int a = 0; a < answers.length; a++) {
 					LocalizedText locAnswerText = TextFinder.getLocalizedText(answers[a], _iLocaleID);
+					listOfAnswers.setStyleClass("answers");
 					
 					ListItem listItem = new ListItem();	
 					
@@ -349,6 +350,7 @@ public class Poll2 extends Block implements Builderaware {
 			
 		} else { //user has woted, let's show results to user
 			
+			listOfAnswers.setStyleClass("results");
 			int total = 0;
 			
 			if (answers != null) {
