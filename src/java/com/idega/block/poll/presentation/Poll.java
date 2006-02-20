@@ -425,10 +425,10 @@ public class Poll extends Block implements Builderaware {
 							table.setWidth("100%");
 							table.setColor("#000000");
 
-							Image transImage = answerTable.getTransparentCell(iwc);
+							Image transImage = Table.getTransparentCell(iwc);
 							transImage.setHeight(10);
 							transImage.setWidth("100%");
-							Image transImage2 = answerTable.getTransparentCell(iwc);
+							Image transImage2 = Table.getTransparentCell(iwc);
 							transImage2.setHeight(10);
 							transImage2.setWidth("100%");
 							if (percent > 0) {

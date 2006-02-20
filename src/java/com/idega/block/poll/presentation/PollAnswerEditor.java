@@ -305,7 +305,7 @@ public PollAnswerEditor(){
 
   private void savePollAnswer(IWContext iwc,int iLocaleID) {
 
-    String pollAnswerString = iwc.getParameter(this.prmAnswerParameter);
+    String pollAnswerString = iwc.getParameter(PollAnswerEditor.prmAnswerParameter);
 
     String localeString = iwc.getParameter("iLocaleID");
 
