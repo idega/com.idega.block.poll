@@ -1,16 +1,12 @@
 package com.idega.block.poll.presentation;
 
-
-
-
-
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Locale;
+
 import com.idega.block.poll.business.PollBusiness;
 import com.idega.core.localisation.business.ICLocaleBusiness;
 import com.idega.core.localisation.presentation.ICLocalePresentation;
-import com.idega.idegaweb.IWBundle;
 import com.idega.idegaweb.IWResourceBundle;
 import com.idega.idegaweb.presentation.IWAdminWindow;
 import com.idega.presentation.IWContext;
@@ -19,346 +15,284 @@ import com.idega.presentation.ui.HiddenInput;
 import com.idega.presentation.ui.SubmitButton;
 import com.idega.presentation.ui.TextInput;
 
+public class PollAnswerEditor extends IWAdminWindow {
 
+	private final static String IW_BUNDLE_IDENTIFIER = "com.idega.block.poll";
 
-public class PollAnswerEditor extends IWAdminWindow{
+	private boolean isAdmin = false;
 
+	private boolean update = false;
 
+	private int pollAnswerID = -1;
 
-private final static String IW_BUNDLE_IDENTIFIER="com.idega.block.poll";
+	private int pollQuestionID = -1;
 
-private boolean isAdmin = false;
+	private static String prmAnswerParameter = "poll.answer";
 
-private boolean save = false;
+	private IWResourceBundle iwrb;
 
-private boolean update = false;
+	public PollAnswerEditor() {
 
-private int pollAnswerID = -1;
+		setWidth(430);
 
-private int pollQuestionID = -1;
+		setHeight(140);
 
-private static String prmAnswerParameter = "poll.answer";
+		setUnMerged();
 
+	}
 
+	public void main(IWContext iwc) throws Exception {
 
-private IWBundle iwb;
+		/**
+		 * 
+		 * @todo permission
+		 * 
+		 */
 
-private IWResourceBundle iwrb;
+		isAdmin = true; // AccessControl.hasEditPermission(this,iwc);
 
+		iwrb = getResourceBundle(iwc);
 
+		addTitle(iwrb.getLocalizedString("poll_answer_editor", "Poll Answer Editor"));
 
-public PollAnswerEditor(){
+		Locale currentLocale = iwc.getCurrentLocale();
+		Locale chosenLocale;
 
-  setWidth(430);
+		String sLocaleId = iwc.getParameter(PollAdminWindow.prmLocale);
 
-  setHeight(140);
+		int iLocaleId = -1;
 
-  setUnMerged();
+		if (sLocaleId != null) {
 
-}
+			iLocaleId = Integer.parseInt(sLocaleId);
 
+			chosenLocale = ICLocaleBusiness.getLocaleReturnIcelandicLocaleIfNotFound(iLocaleId);
 
+		}
 
-  public void main(IWContext iwc) throws Exception {
+		else {
 
-    /**
+			chosenLocale = currentLocale;
 
-     * @todo permission
+			iLocaleId = ICLocaleBusiness.getLocaleId(chosenLocale);
 
-     */
+		}
 
-    isAdmin = true; //AccessControl.hasEditPermission(this,iwc);
+		if (isAdmin) {
 
-    iwb = getBundle(iwc);
+			processForm(iwc, iLocaleId, sLocaleId);
 
-    iwrb = getResourceBundle(iwc);
+		}
 
-    addTitle(iwrb.getLocalizedString("poll_answer_editor","Poll Answer Editor"));
+		else {
 
-    Locale currentLocale = iwc.getCurrentLocale();
-    Locale chosenLocale;
+			noAccess();
 
+		}
 
-    String sLocaleId = iwc.getParameter(PollAdminWindow.prmLocale);
+	}
 
+	private void processForm(IWContext iwc, int iLocaleId, String sLocaleID) {
 
+		if (iwc.getParameter(PollBusiness._PARAMETER_POLL_QUESTION) != null) {
 
-    int iLocaleId = -1;
+			try {
 
-    if(sLocaleId!= null){
+				pollQuestionID = Integer.parseInt(iwc.getParameter(PollBusiness._PARAMETER_POLL_QUESTION));
 
-      iLocaleId = Integer.parseInt(sLocaleId);
+				iwc.setSessionAttribute(PollBusiness._PARAMETER_POLL_QUESTION, Integer.toString(pollQuestionID));
 
-      chosenLocale = ICLocaleBusiness.getLocaleReturnIcelandicLocaleIfNotFound(iLocaleId);
+			}
 
-    }
+			catch (NumberFormatException e) {
 
-    else{
+				pollQuestionID = -1;
 
-      chosenLocale = currentLocale;
+			}
 
-      iLocaleId = ICLocaleBusiness.getLocaleId(chosenLocale);
+		}
 
-    }
+		else if ((String) iwc.getSessionAttribute(PollBusiness._PARAMETER_POLL_QUESTION) != null) {
 
+			try {
 
+				pollQuestionID = Integer.parseInt((String) iwc.getSessionAttribute(PollBusiness._PARAMETER_POLL_QUESTION));
 
-    if ( isAdmin ) {
+			}
 
-      processForm(iwc, iLocaleId, sLocaleId);
+			catch (NumberFormatException e) {
 
-    }
+				pollQuestionID = -1;
 
-    else {
+			}
 
-      noAccess();
+		}
 
-    }
+		if (iwc.getParameter(PollBusiness._PARAMETER_POLL_ANSWER) != null) {
 
-  }
+			try {
 
+				pollAnswerID = Integer.parseInt(iwc.getParameter(PollBusiness._PARAMETER_POLL_ANSWER));
 
+				iwc.setSessionAttribute(PollBusiness._PARAMETER_POLL_ANSWER, Integer.toString(pollAnswerID));
 
-  private void processForm(IWContext iwc, int iLocaleId, String sLocaleID) {
+			}
 
-    if ( iwc.getParameter(PollBusiness._PARAMETER_POLL_QUESTION) != null ) {
+			catch (NumberFormatException e) {
 
-      try {
+				pollAnswerID = -1;
 
-        pollQuestionID = Integer.parseInt(iwc.getParameter(PollBusiness._PARAMETER_POLL_QUESTION));
+			}
 
-        iwc.setSessionAttribute(PollBusiness._PARAMETER_POLL_QUESTION,Integer.toString(pollQuestionID));
+		}
 
-      }
+		/*
+		 * if ( sLocaleID != null ) {
+		 * 
+		 * savePollAnswer(iwc,iLocaleId);
+		 *  }
+		 */
 
-      catch (NumberFormatException e) {
+		if ((String) iwc.getSessionAttribute(PollBusiness._PARAMETER_POLL_ANSWER) != null) {
 
-        pollQuestionID = -1;
+			try {
 
-      }
+				pollAnswerID = Integer.parseInt((String) iwc.getSessionAttribute(PollBusiness._PARAMETER_POLL_ANSWER));
 
-    }
+			}
 
-    else if ( (String) iwc.getSessionAttribute(PollBusiness._PARAMETER_POLL_QUESTION) != null ) {
+			catch (NumberFormatException e) {
 
-      try {
+				pollAnswerID = -1;
 
-        pollQuestionID = Integer.parseInt((String) iwc.getSessionAttribute(PollBusiness._PARAMETER_POLL_QUESTION));
+			}
 
-      }
+		}
 
-      catch (NumberFormatException e) {
+		if (iwc.getParameter(PollBusiness._PARAMETER_MODE) != null) {
 
-        pollQuestionID = -1;
+			if (iwc.getParameter(PollBusiness._PARAMETER_MODE).equalsIgnoreCase(PollBusiness._PARAMETER_CLOSE)) {
 
-      }
+				closePollAnswer(iwc);
 
-    }
+			}
 
+			else if (iwc.getParameter(PollBusiness._PARAMETER_MODE).equalsIgnoreCase(PollBusiness._PARAMETER_SAVE)) {
 
+				savePollAnswer(iwc, iLocaleId);
 
-    if ( iwc.getParameter(PollBusiness._PARAMETER_POLL_ANSWER) != null ) {
+			}
 
-      try {
+		}
 
-        pollAnswerID = Integer.parseInt(iwc.getParameter(PollBusiness._PARAMETER_POLL_ANSWER));
+		if (pollAnswerID != -1) {
 
-        iwc.setSessionAttribute(PollBusiness._PARAMETER_POLL_ANSWER,Integer.toString(pollAnswerID));
+			if (iwc.getParameter(PollBusiness._PARAMETER_DELETE) != null) {
 
-      }
+				deletePollQuestion();
 
-      catch (NumberFormatException e) {
+			}
 
-        pollAnswerID = -1;
+			else {
 
-      }
+				update = true;
 
-    }
+			}
 
+		}
 
+		initializeFields(iLocaleId);
 
-    /*if ( sLocaleID != null ) {
+	}
 
-      savePollAnswer(iwc,iLocaleId);
+	private void initializeFields(int iLocaleID) {
 
-    }*/
+		String pollAnswer = PollBusiness.getLocalizedAnswer(pollAnswerID, iLocaleID);
 
+		DropdownMenu localeDrop = ICLocalePresentation.getLocaleDropdownIdKeyed(PollAdminWindow.prmLocale);
 
+		localeDrop.setToSubmit();
 
-    if ( (String) iwc.getSessionAttribute(PollBusiness._PARAMETER_POLL_ANSWER) != null ) {
+		localeDrop.setSelectedElement(Integer.toString(iLocaleID));
 
-      try {
+		addLeft(iwrb.getLocalizedString("locale", "Locale") + ": ", localeDrop, false);
 
-        pollAnswerID = Integer.parseInt((String) iwc.getSessionAttribute(PollBusiness._PARAMETER_POLL_ANSWER));
+		TextInput questionInput = new TextInput(prmAnswerParameter);
 
-      }
+		questionInput.setLength(40);
 
-      catch (NumberFormatException e) {
+		if (update && pollAnswer != null) {
 
-        pollAnswerID = -1;
+			questionInput.setContent(pollAnswer);
 
-      }
+		}
 
-    }
+		addLeft(iwrb.getLocalizedString("answer", "Answer") + ":", questionInput, true);
 
+		addHiddenInput(new HiddenInput(PollBusiness._PARAMETER_POLL_QUESTION, Integer.toString(pollQuestionID)));
 
+		addHiddenInput(new HiddenInput(PollBusiness._PARAMETER_POLL_ANSWER, Integer.toString(pollAnswerID)));
 
-    if ( iwc.getParameter(PollBusiness._PARAMETER_MODE) != null ) {
+		addHiddenInput(new HiddenInput("iLocaleID", Integer.toString(iLocaleID)));
 
-      if ( iwc.getParameter(PollBusiness._PARAMETER_MODE).equalsIgnoreCase(PollBusiness._PARAMETER_CLOSE) ) {
+		addSubmitButton(new SubmitButton(iwrb.getLocalizedImageButton("close", "CLOSE"), PollBusiness._PARAMETER_MODE, PollBusiness._PARAMETER_CLOSE));
 
-        closePollAnswer(iwc);
+		addSubmitButton(new SubmitButton(iwrb.getLocalizedImageButton("save", "SAVE"), PollBusiness._PARAMETER_MODE, PollBusiness._PARAMETER_SAVE));
 
-      }
+	}
 
-      else if ( iwc.getParameter(PollBusiness._PARAMETER_MODE).equalsIgnoreCase(PollBusiness._PARAMETER_SAVE) ) {
+	private void closePollAnswer(IWContext iwc) {
 
-        savePollAnswer(iwc,iLocaleId);
+		iwc.removeSessionAttribute(PollBusiness._PARAMETER_POLL_ANSWER);
 
-      }
+		setParentToReload();
 
-    }
+		close();
 
+	}
 
+	private void savePollAnswer(IWContext iwc, int iLocaleID) {
 
-    if ( pollAnswerID != -1 ) {
+		String pollAnswerString = iwc.getParameter(PollAnswerEditor.prmAnswerParameter);
 
-      if ( iwc.getParameter(PollBusiness._PARAMETER_DELETE) != null ) {
+		String localeString = iwc.getParameter("iLocaleID");
 
-        deletePollQuestion();
+		if (pollAnswerString == null || pollAnswerString.length() == 0) {
 
-      }
+			pollAnswerString = iwrb.getLocalizedString("no_text", "No answer entered");
 
-      else {
+		}
 
-        update = true;
+		if (localeString != null) {
 
-      }
+			pollAnswerID = PollBusiness.savePollAnswer(pollQuestionID, pollAnswerID, pollAnswerString, Integer.parseInt(localeString));
 
-    }
+		}
 
+		iwc.setSessionAttribute(PollBusiness._PARAMETER_POLL_ANSWER, Integer.toString(pollAnswerID));
 
+	}
 
-    initializeFields(iLocaleId);
+	private void deletePollQuestion() {
 
-  }
+		PollBusiness.deletePollAnswer(pollAnswerID);
 
+		setParentToReload();
 
+		close();
 
-  private void initializeFields(int iLocaleID) {
+	}
 
-    String pollAnswer = PollBusiness.getLocalizedAnswer(pollAnswerID,iLocaleID);
+	private void noAccess() throws IOException, SQLException {
 
+		close();
 
+	}
 
-    DropdownMenu localeDrop = ICLocalePresentation.getLocaleDropdownIdKeyed(PollAdminWindow.prmLocale);
+	public String getBundleIdentifier() {
 
-      localeDrop.setToSubmit();
+		return IW_BUNDLE_IDENTIFIER;
 
-      localeDrop.setSelectedElement(Integer.toString(iLocaleID));
-
-    addLeft(iwrb.getLocalizedString("locale","Locale")+": ",localeDrop,false);
-
-
-
-    TextInput questionInput = new TextInput(prmAnswerParameter);
-
-      questionInput.setLength(40);
-
-      if ( update && pollAnswer != null ) {
-
-        questionInput.setContent(pollAnswer);
-
-      }
-
-
-
-    addLeft(iwrb.getLocalizedString("answer","Answer")+":",questionInput,true);
-
-    addHiddenInput(new HiddenInput(PollBusiness._PARAMETER_POLL_QUESTION,Integer.toString(pollQuestionID)));
-
-    addHiddenInput(new HiddenInput(PollBusiness._PARAMETER_POLL_ANSWER,Integer.toString(pollAnswerID)));
-
-    addHiddenInput(new HiddenInput("iLocaleID",Integer.toString(iLocaleID)));
-
-
-
-    addSubmitButton(new SubmitButton(iwrb.getLocalizedImageButton("close","CLOSE"),PollBusiness._PARAMETER_MODE,PollBusiness._PARAMETER_CLOSE));
-
-    addSubmitButton(new SubmitButton(iwrb.getLocalizedImageButton("save","SAVE"),PollBusiness._PARAMETER_MODE,PollBusiness._PARAMETER_SAVE));
-
-  }
-
-
-
-  private void closePollAnswer(IWContext iwc) {
-
-    iwc.removeSessionAttribute(PollBusiness._PARAMETER_POLL_ANSWER);
-
-    setParentToReload();
-
-    close();
-
-  }
-
-
-
-  private void savePollAnswer(IWContext iwc,int iLocaleID) {
-
-    String pollAnswerString = iwc.getParameter(PollAnswerEditor.prmAnswerParameter);
-
-    String localeString = iwc.getParameter("iLocaleID");
-
-
-
-    if ( pollAnswerString == null || pollAnswerString.length() == 0 ) {
-
-      pollAnswerString = iwrb.getLocalizedString("no_text","No answer entered");
-
-    }
-
-
-
-    if ( localeString != null ) {
-
-      pollAnswerID = PollBusiness.savePollAnswer(pollQuestionID,pollAnswerID,pollAnswerString,Integer.parseInt(localeString));
-
-    }
-
-
-
-    iwc.setSessionAttribute(PollBusiness._PARAMETER_POLL_ANSWER,Integer.toString(pollAnswerID));
-
-  }
-
-
-
-  private void deletePollQuestion() {
-
-    PollBusiness.deletePollAnswer(pollAnswerID);
-
-    setParentToReload();
-
-    close();
-
-  }
-
-
-
-  private void noAccess() throws IOException,SQLException {
-
-    close();
-
-  }
-
-
-
-  public String getBundleIdentifier(){
-
-    return IW_BUNDLE_IDENTIFIER;
-
-  }
-
-
+	}
 
 }

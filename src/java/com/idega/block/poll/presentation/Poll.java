@@ -51,8 +51,6 @@ public class Poll extends Block implements Builderaware {
 	protected IWBundle _iwb;
 	protected IWBundle _iwbPoll;
 
-	private boolean _styles = true;
-
 	private Table _myTable;
 
 	public static String _prmPollID = "po.poll_id";
@@ -63,10 +61,6 @@ public class Poll extends Block implements Builderaware {
 	private boolean _newObjInst = false;
 	private boolean _newWithAttribute = false;
 
-	private String _parameterString;
-	private String _styleAttribute;
-	private String _hoverStyle;
-	private String _questionStyleAttribute;
 	private String _votedColor;
 	private String _whiteColor;
 
@@ -115,7 +109,6 @@ public class Poll extends Block implements Builderaware {
 
 		_isAdmin = iwc.hasEditPermission(this);
 		_iLocaleID = ICLocaleBusiness.getLocaleId(iwc.getCurrentLocale());
-		_parameterString = iwc.getParameter(PollBusiness._PARAMETER_POLL_VOTER);
 		_date = new IWTimestamp();
 
 		PollEntity poll = null;
@@ -517,15 +510,12 @@ public class Poll extends Block implements Builderaware {
 	}
 
 	public void setStyle(String style) {
-		_styleAttribute = style;
 	}
 
 	public void setHoverStyle(String hoverStyle) {
-		_hoverStyle = hoverStyle;
 	}
 
 	public void setQuestionStyle(String style) {
-		_questionStyleAttribute = style;
 	}
 
 	public void setNumberOfShownPolls(int numberOfShownPolls) {

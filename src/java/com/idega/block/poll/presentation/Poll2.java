@@ -66,11 +66,6 @@ public class Poll2 extends Block implements Builderaware {
 	private boolean _newObjInst = false;
 	private boolean _newWithAttribute = false;
 
-	private String _votedColor;
-	private String _whiteColor;
-
-	private String _pollWidth;
-
 	private int _numberOfShownPolls;
 	private boolean _showVotes;
 
@@ -84,7 +79,6 @@ public class Poll2 extends Block implements Builderaware {
 
 	private boolean _showInformation = false;
 
-	private String _questionAlignment;
 	private String _name;
 
 	public static final int RADIO_BUTTON_VIEW = 1;
@@ -437,14 +431,10 @@ public class Poll2 extends Block implements Builderaware {
 	}
 
 	private void setDefaultValues() {
-		_pollWidth = "100%";
 		_numberOfShownPolls = 3;
 		_showVotes = true;
 		_showCollection = true;
-		_questionAlignment = "left";
 		_pollID = -1;
-		_votedColor = "#104584";
-		_whiteColor = "#FFFFFF";
 	}
 
 	public boolean deleteBlock(int ICObjectInstanceId) {
@@ -457,11 +447,9 @@ public class Poll2 extends Block implements Builderaware {
 	}
 
 	public void setWidth(int pollWidth) {
-		_pollWidth = Integer.toString(pollWidth);
 	}
 
 	public void setWidth(String pollWidth) {
-		_pollWidth = pollWidth;
 	}
 
 	public void setNumberOfShownPolls(int numberOfShownPolls) {
@@ -497,15 +485,12 @@ public class Poll2 extends Block implements Builderaware {
 	}
 
 	public void setQuestionAlignment(String alignment) {
-		_questionAlignment = alignment;
 	}
 
 	public void setVotedColor(String color) {
-		_votedColor = color;
 	}
 
 	public void setWhiteColor(String color) {
-		_whiteColor = color;
 	}
 
 	public Object clone() {
@@ -580,10 +565,6 @@ public class Poll2 extends Block implements Builderaware {
 			mainLayer.setStyleClass("poll");
 		}
 		return mainLayer;
-	}
-
-	private void setMainLayer(Layer mainLayer) {
-		this.mainLayer = mainLayer;
 	}
 
 	public String getMainStyleClass() {

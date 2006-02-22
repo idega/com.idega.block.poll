@@ -34,9 +34,7 @@ private final static String IW_BUNDLE_IDENTIFIER="com.idega.block.poll";
 protected IWResourceBundle _iwrb;
 protected IWBundle _iwb;
 
-private boolean _isAdmin;
 private boolean _showCollection = false;
-private boolean _save = false;
 private boolean _showVotes = true;
 private int _numberOfPolls = 3;
 private int _pollID = -1;
@@ -63,10 +61,6 @@ public PollResult() {
     setAllMargins(0);
     setTitle(_iwrb.getLocalizedString("results","Results"));
 
-    /**
-     * @todo permission
-     */
-    _isAdmin = true; //AccessControl.hasEditPermission(this,iwc);
     _iLocaleID = ICLocaleBusiness.getLocaleId(iwc.getCurrentLocale());
 
     String collectionString = iwc.getParameter(Poll._prmPollCollection);
