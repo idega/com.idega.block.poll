@@ -14,6 +14,7 @@ import com.idega.block.poll.data.PollQuestion;
 import com.idega.block.text.business.TextFinder;
 import com.idega.block.text.data.LocalizedText;
 import com.idega.core.component.data.ICObjectInstance;
+import com.idega.data.GenericEntity;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.ui.DropdownMenu;
 import com.idega.util.IWTimestamp;
@@ -55,7 +56,7 @@ public static final String COOKIE_NAME = "idegaPOLL_";
 
     try {
 
-      return (PollEntity[]) com.idega.block.poll.data.PollEntityBMPBean.getStaticInstance(PollEntity.class).findAllByColumn(com.idega.block.poll.data.PollQuestionBMPBean.getColumnNameID(),Integer.toString(pollQuestionID),"=");
+      return (PollEntity[]) GenericEntity.getStaticInstance(PollEntity.class).findAllByColumn(com.idega.block.poll.data.PollQuestionBMPBean.getColumnNameID(),Integer.toString(pollQuestionID),"=");
 
     }
 
@@ -271,7 +272,7 @@ public static final String COOKIE_NAME = "idegaPOLL_";
 
     try {
 
-      return (PollAnswer[]) com.idega.block.poll.data.PollAnswerBMPBean.getStaticInstance(PollAnswer.class).findAllByColumn(com.idega.block.poll.data.PollQuestionBMPBean.getColumnNameID(),Integer.toString(pollQuestionID),"=");
+      return (PollAnswer[]) GenericEntity.getStaticInstance(PollAnswer.class).findAllByColumn(com.idega.block.poll.data.PollQuestionBMPBean.getColumnNameID(),Integer.toString(pollQuestionID),"=");
 
     }
 
@@ -561,7 +562,7 @@ public static final String COOKIE_NAME = "idegaPOLL_";
 
     try {
 
-      pollQuestion = (PollQuestion[]) com.idega.block.poll.data.PollQuestionBMPBean.getStaticInstance(PollQuestion.class).findAll();
+      pollQuestion = (PollQuestion[]) GenericEntity.getStaticInstance(PollQuestion.class).findAll();
 
     }
 
@@ -621,7 +622,7 @@ public static final String COOKIE_NAME = "idegaPOLL_";
 
     try {
 
-      return com.idega.data.EntityFinder.findRelated(poll,com.idega.block.poll.data.PollQuestionBMPBean.getStaticInstance(PollQuestion.class));
+      return com.idega.data.EntityFinder.findRelated(poll,GenericEntity.getStaticInstance(PollQuestion.class));
 
     }
 
@@ -649,11 +650,11 @@ public static final String COOKIE_NAME = "idegaPOLL_";
 
       if ( superAdmin )
 
-        pollQuestion = (PollQuestion[]) com.idega.block.poll.data.PollQuestionBMPBean.getStaticInstance(PollQuestion.class).findAll();
+        pollQuestion = (PollQuestion[]) GenericEntity.getStaticInstance(PollQuestion.class).findAll();
 
       else
 
-        pollQuestion = (PollQuestion[]) com.idega.block.poll.data.PollQuestionBMPBean.getStaticInstance(PollQuestion.class).findAllByColumn(com.idega.block.poll.data.PollQuestionBMPBean.getColumnNameUserID(),Integer.toString(userID),"=");
+        pollQuestion = (PollQuestion[]) GenericEntity.getStaticInstance(PollQuestion.class).findAllByColumn(com.idega.block.poll.data.PollQuestionBMPBean.getColumnNameUserID(),Integer.toString(userID),"=");
 
     }
 
@@ -1053,7 +1054,7 @@ public static final String COOKIE_NAME = "idegaPOLL_";
 
       }
 
-      pollQuestion.removeFrom(com.idega.block.poll.data.PollEntityBMPBean.getStaticInstance(PollEntity.class));
+      pollQuestion.removeFrom(GenericEntity.getStaticInstance(PollEntity.class));
 
       pollQuestion.delete();
 
