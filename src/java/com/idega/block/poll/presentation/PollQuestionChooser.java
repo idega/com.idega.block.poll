@@ -35,18 +35,18 @@ public class PollQuestionChooser extends IWAdminWindow {
 		/**
 		 * @todo permission
 		 */
-		isAdmin = true; // AccessControl.hasEditPermission(this,iwc);
-		superAdmin = iwc.isSuperAdmin();
-		iwrb = getResourceBundle(iwc);
-		addTitle(iwrb.getLocalizedString("poll_question_chooser", "Poll Question Chooser"));
+		this.isAdmin = true; // AccessControl.hasEditPermission(this,iwc);
+		this.superAdmin = iwc.isSuperAdmin();
+		this.iwrb = getResourceBundle(iwc);
+		addTitle(this.iwrb.getLocalizedString("poll_question_chooser", "Poll Question Chooser"));
 		Locale currentLocale = iwc.getCurrentLocale();
 		Locale chosenLocale;
 
 		try {
-			userID = LoginBusinessBean.getUser(iwc).getID();
+			this.userID = LoginBusinessBean.getUser(iwc).getID();
 		}
 		catch (Exception e) {
-			userID = -1;
+			this.userID = -1;
 		}
 
 		String sLocaleId = iwc.getParameter(PollAdminWindow.prmLocale);
@@ -61,7 +61,7 @@ public class PollQuestionChooser extends IWAdminWindow {
 			iLocaleId = ICLocaleBusiness.getLocaleId(chosenLocale);
 		}
 
-		if (isAdmin) {
+		if (this.isAdmin) {
 			processForm(iwc, iLocaleId);
 		}
 		else {
@@ -91,12 +91,12 @@ public class PollQuestionChooser extends IWAdminWindow {
 			localeDrop.setToSubmit();
 			localeDrop.setSelectedElement(Integer.toString(iLocaleId));
 
-			DropdownMenu questionDrop = PollBusiness.getQuestions(prmQuestions, userID, iLocaleId, superAdmin);
+			DropdownMenu questionDrop = PollBusiness.getQuestions(prmQuestions, this.userID, iLocaleId, this.superAdmin);
 			questionDrop.setMarkupAttribute("style", STYLE);
 			questionDrop.setToSubmit();
 
-			Text localeText = this.formatText(iwrb.getLocalizedString("locale", "Locale"), true);
-			Text questionText = this.formatText(iwrb.getLocalizedString("questions", "Questions"), true);
+			Text localeText = this.formatText(this.iwrb.getLocalizedString("locale", "Locale"), true);
+			Text questionText = this.formatText(this.iwrb.getLocalizedString("questions", "Questions"), true);
 
 			Table table = new Table(1, 2);
 			table.setCellpadding(8);

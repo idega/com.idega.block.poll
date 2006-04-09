@@ -100,9 +100,9 @@ public static final String COOKIE_NAME = "idegaPOLL_";
 
     try {
 
-      if ( poll != null )
-
-        return ((com.idega.block.poll.data.PollQuestionHome)com.idega.data.IDOLookup.getHomeLegacy(PollQuestion.class)).findByPrimaryKeyLegacy(poll.getPollQuestionID());
+      if ( poll != null ) {
+				return ((com.idega.block.poll.data.PollQuestionHome)com.idega.data.IDOLookup.getHomeLegacy(PollQuestion.class)).findByPrimaryKeyLegacy(poll.getPollQuestionID());
+			}
 
       return null;
 
@@ -254,9 +254,9 @@ public static final String COOKIE_NAME = "idegaPOLL_";
 
     if ( locString != null ) {
 
-      if ( locString.length() == 0 )
-
-        locString = null;
+      if ( locString.length() == 0 ) {
+				locString = null;
+			}
 
     }
 
@@ -648,13 +648,12 @@ public static final String COOKIE_NAME = "idegaPOLL_";
 
     try {
 
-      if ( superAdmin )
-
-        pollQuestion = (PollQuestion[]) GenericEntity.getStaticInstance(PollQuestion.class).findAll();
-
-      else
-
-        pollQuestion = (PollQuestion[]) GenericEntity.getStaticInstance(PollQuestion.class).findAllByColumn(com.idega.block.poll.data.PollQuestionBMPBean.getColumnNameUserID(),Integer.toString(userID),"=");
+      if ( superAdmin ) {
+				pollQuestion = (PollQuestion[]) GenericEntity.getStaticInstance(PollQuestion.class).findAll();
+			}
+			else {
+				pollQuestion = (PollQuestion[]) GenericEntity.getStaticInstance(PollQuestion.class).findAllByColumn(com.idega.block.poll.data.PollQuestionBMPBean.getColumnNameUserID(),Integer.toString(userID),"=");
+			}
 
     }
 
