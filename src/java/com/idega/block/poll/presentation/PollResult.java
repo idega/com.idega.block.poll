@@ -135,7 +135,7 @@ public PollResult() {
 
     Image header = this._iwrb.getImage("top.gif");
     this.line = this._iwb.getImage("/shared/line.gif");
-    CloseButton close = new CloseButton();
+    CloseButton close = new CloseButton(this._iwrb.getLocalizedString("close", "Close"));
     //CloseButton close = new CloseButton(_iwrb.getImage("close.gif"));
 
     this.layoutTable.add(header,1,1);
