@@ -14,6 +14,11 @@
       <name>1.0.1</name>
       <tag>POLL_1_0_1</tag>
     </version>
+    <version>
+      <id>3.1.0</id>
+      <name>3.1.0</name>
+      <tag>POLL_3_1_0</tag>
+    </version>
   </versions>
   <branches/>
   <developers>
@@ -61,9 +66,11 @@
       <type>jar</type>
       <url>http://www.idega.com/</url>
       <properties>
-       <!-- <j:if test="${idegaweb.project.source.dependent}=='true'}">-->
-          <eclipse.dependency>true</eclipse.dependency>
-       <!-- </j:if> -->
+        <!-- <j:if test="${idegaweb.project.source.dependent}=='true'}">-->
+
+        <eclipse.dependency>true</eclipse.dependency>
+        <!-- </j:if> -->
+
       </properties>
     </dependency>
     <dependency>
@@ -73,9 +80,11 @@
       <type>jar</type>
       <url>http://www.idega.com/</url>
       <properties>
-       <!-- <j:if test="${idegaweb.project.source.dependent}=='true'}">-->
-          <eclipse.dependency>true</eclipse.dependency>
-       <!-- </j:if>-->
+        <!-- <j:if test="${idegaweb.project.source.dependent}=='true'}">-->
+
+        <eclipse.dependency>true</eclipse.dependency>
+        <!-- </j:if>-->
+
       </properties>
     </dependency>
   </dependencies>
