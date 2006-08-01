@@ -429,7 +429,7 @@ public class Poll2 extends Block implements Builderaware {
 	private GenericButton getOlderPollsButton() {
 		GenericButton collectionLink = new GenericButton("", this._iwrb.getLocalizedString("older_polls", "Older polls"));
 		collectionLink.setStyleClass("olderPolls");
-		collectionLink.setWindowToOpen(PollResult.class);
+		collectionLink.setPublicWindowToOpen(PollResult.class);
 		collectionLink.addParameterToWindow(Poll._prmPollID, this._pollID);
 		collectionLink.addParameterToWindow(Poll._prmPollCollection, PollBusiness._PARAMETER_TRUE);
 		collectionLink.addParameterToWindow(Poll._prmNumberOfPolls, this._numberOfShownPolls);
