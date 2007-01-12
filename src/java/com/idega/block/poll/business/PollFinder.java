@@ -28,8 +28,8 @@ public class PollFinder {
     try {
       List L = EntityFinder.findAllByColumn(((com.idega.block.poll.data.PollEntityHome)com.idega.data.IDOLookup.getHomeLegacy(PollEntity.class)).createLegacy(),com.idega.block.poll.data.PollEntityBMPBean.getColumnNameAttribute(),sAttribute);
       if(L!= null) {
-				poll =  (PollEntity) L.get(0);
-			}
+		poll =  (PollEntity) L.get(0);
+	}
     }
     catch (SQLException ex) {
       ex.printStackTrace();

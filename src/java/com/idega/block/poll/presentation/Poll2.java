@@ -66,6 +66,11 @@ public class Poll2 extends Block implements Builderaware {
 	private boolean _newObjInst = false;
 	private boolean _newWithAttribute = false;
 
+	private String _votedColor;
+	private String _whiteColor;
+
+	private String _pollWidth;
+
 	private int _numberOfShownPolls;
 	private boolean _showVotes;
 
@@ -79,6 +84,7 @@ public class Poll2 extends Block implements Builderaware {
 
 	private boolean _showInformation = false;
 
+	private String _questionAlignment;
 	private String _name;
 
 	public static final int RADIO_BUTTON_VIEW = 1;
@@ -307,7 +313,6 @@ public class Poll2 extends Block implements Builderaware {
 			if (answers != null) {
 				for (int a = 0; a < answers.length; a++) {
 					LocalizedText locAnswerText = TextFinder.getLocalizedText(answers[a], this._iLocaleID);
-					listOfAnswers.setStyleClass("answers");
 					
 					ListItem listItem = new ListItem();	
 					
@@ -354,7 +359,6 @@ public class Poll2 extends Block implements Builderaware {
 			
 		} else { //user has woted, let's show results to user
 			
-			listOfAnswers.setStyleClass("results");
 			int total = 0;
 			
 			if (answers != null) {
@@ -443,10 +447,14 @@ public class Poll2 extends Block implements Builderaware {
 	}
 
 	private void setDefaultValues() {
+		this._pollWidth = "100%";
 		this._numberOfShownPolls = 3;
 		this._showVotes = true;
 		this._showCollection = true;
+		this._questionAlignment = "left";
 		this._pollID = -1;
+		this._votedColor = "#104584";
+		this._whiteColor = "#FFFFFF";
 	}
 
 	public boolean deleteBlock(int ICObjectInstanceId) {
@@ -459,9 +467,11 @@ public class Poll2 extends Block implements Builderaware {
 	}
 
 	public void setWidth(int pollWidth) {
+		this._pollWidth = Integer.toString(pollWidth);
 	}
 
 	public void setWidth(String pollWidth) {
+		this._pollWidth = pollWidth;
 	}
 
 	public void setNumberOfShownPolls(int numberOfShownPolls) {
@@ -497,12 +507,15 @@ public class Poll2 extends Block implements Builderaware {
 	}
 
 	public void setQuestionAlignment(String alignment) {
+		this._questionAlignment = alignment;
 	}
 
 	public void setVotedColor(String color) {
+		this._votedColor = color;
 	}
 
 	public void setWhiteColor(String color) {
+		this._whiteColor = color;
 	}
 
 	public Object clone() {
@@ -580,6 +593,10 @@ public class Poll2 extends Block implements Builderaware {
 			this.mainLayer.setStyleClass("poll");
 		}
 		return this.mainLayer;
+	}
+
+	private void setMainLayer(Layer mainLayer) {
+		this.mainLayer = mainLayer;
 	}
 
 	public String getMainStyleClass() {

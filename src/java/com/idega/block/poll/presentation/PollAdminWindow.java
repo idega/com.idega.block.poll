@@ -30,10 +30,14 @@ public class PollAdminWindow extends IWAdminWindow{
 private final static String IW_BUNDLE_IDENTIFIER="com.idega.block.poll";
 private boolean isAdmin = false;
 private boolean superAdmin = false;
+private boolean save = false;
+private int iObjInsId = -1;
 public  static String prmID = "poll.id";
 public  static String prmAttribute = "poll.attribute";
 public  static String prmLocale = "poll.localedrp";
 public  static String prmObjInstId = "poll.icobjinstid";
+private static String prmHeadline = "poll.headline";
+
 private int _pollID = -1;
 private int _userID = -1;
 private int _newObjInst = -1;
