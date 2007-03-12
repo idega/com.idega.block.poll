@@ -5,7 +5,7 @@
   <pomVersion>3</pomVersion>
   <name>idegaWeb Poll Block</name>
   <artifactId>com.idega.block.poll</artifactId>
-  <currentVersion>3.1.1</currentVersion>
+  <currentVersion>3.1.2</currentVersion>
   <inceptionYear>2000</inceptionYear>
   <shortDescription>Poll</shortDescription>
   <versions>
@@ -67,30 +67,16 @@
     <dependency>
       <groupId>bundles</groupId>
       <artifactId>com.idega.core</artifactId>
-      <version>3.1.7</version>
+      <version>3.1.39</version>
       <type>jar</type>
       <url>http://www.idega.com/</url>
-      <properties>
-        <!-- <j:if test="${idegaweb.project.source.dependent}=='true'}">-->
-
-        <eclipse.dependency>true</eclipse.dependency>
-        <!-- </j:if> -->
-
-      </properties>
     </dependency>
     <dependency>
       <groupId>bundles</groupId>
       <artifactId>com.idega.block.text</artifactId>
-      <version>3.1.0</version>
+      <version>3.1.1</version>
       <type>jar</type>
       <url>http://www.idega.com/</url>
-      <properties>
-        <!-- <j:if test="${idegaweb.project.source.dependent}=='true'}">-->
-
-        <eclipse.dependency>true</eclipse.dependency>
-        <!-- </j:if>-->
-
-      </properties>
     </dependency>
   </dependencies>
   <build>
