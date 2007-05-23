@@ -1,10 +1,10 @@
 package com.idega.block.poll.business;
 
-
-
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.Cookie;
 
@@ -20,1352 +20,1205 @@ import com.idega.presentation.ui.DropdownMenu;
 import com.idega.util.IWTimestamp;
 import com.idega.util.database.ConnectionBroker;
 
+public class PollBusiness {
 
+	public static final String _PARAMETER_POLL_VOTER = "idega_poll_voter";
 
-public class PollBusiness{
+	public static final String _PARAMETER_POLL_ANSWER = "poll_answer_id";
 
+	public static final String _PARAMETER_POLL_QUESTION = "poll_question_id";
 
+	public static final String _PARAMETER_MODE = "mode";
 
-public static final String _PARAMETER_POLL_VOTER = "idega_poll_voter";
+	public static final String _PARAMETER_TRUE = "true";
 
-public static final String _PARAMETER_POLL_ANSWER = "poll_answer_id";
+	public static final String _PARAMETER_FALSE = "false";
 
-public static final String _PARAMETER_POLL_QUESTION = "poll_question_id";
+	public static final String _PARAMETER_VOTE = "vote";
 
-public static final String _PARAMETER_MODE = "mode";
+	public static final String _PARAMETER_DELETE = "delete";
 
-public static final String _PARAMETER_TRUE = "true";
+	public static final String _PARAMETER_SAVE = "save";
 
-public static final String _PARAMETER_FALSE = "false";
+	public static final String _PARAMETER_CLOSE = "close";
 
-public static final String _PARAMETER_VOTE = "vote";
+	public static final String COOKIE_NAME = "idegaPOLL_";
 
-public static final String _PARAMETER_DELETE = "delete";
+	public static PollEntity[] getPolls(int pollQuestionID) {
 
-public static final String _PARAMETER_SAVE = "save";
+		try {
 
-public static final String _PARAMETER_CLOSE = "close";
+			return (PollEntity[]) GenericEntity.getStaticInstance(PollEntity.class).findAllByColumn(com.idega.block.poll.data.PollQuestionBMPBean.getColumnNameID(), Integer.toString(pollQuestionID), "=");
 
+		}
 
+		catch (SQLException e) {
 
-public static final String COOKIE_NAME = "idegaPOLL_";
+			return null;
 
+		}
 
+	}
 
-  public static PollEntity[] getPolls(int pollQuestionID) {
+	public static PollEntity[] getPolls(PollQuestion pollQuestion) {
 
-    try {
+		return getPolls(pollQuestion.getID());
 
-      return (PollEntity[]) GenericEntity.getStaticInstance(PollEntity.class).findAllByColumn(com.idega.block.poll.data.PollQuestionBMPBean.getColumnNameID(),Integer.toString(pollQuestionID),"=");
+	}
 
-    }
+	public static PollQuestion getQuestion(int pollID) {
 
-    catch (SQLException e) {
+		try {
 
-      return null;
+			return getQuestion(((com.idega.block.poll.data.PollEntityHome) com.idega.data.IDOLookup.getHomeLegacy(PollEntity.class)).findByPrimaryKeyLegacy(pollID));
 
-    }
+		}
 
-  }
+		catch (SQLException e) {
 
+			return null;
 
+		}
 
-  public static PollEntity[] getPolls(PollQuestion pollQuestion) {
+	}
 
-    return getPolls(pollQuestion.getID());
+	public static PollQuestion getQuestion(PollEntity poll) {
 
-  }
+		try {
 
-
-
-  public static PollQuestion getQuestion(int pollID) {
-
-    try {
-
-      return getQuestion(((com.idega.block.poll.data.PollEntityHome)com.idega.data.IDOLookup.getHomeLegacy(PollEntity.class)).findByPrimaryKeyLegacy(pollID));
-
-    }
-
-    catch (SQLException e) {
-
-      return null;
-
-    }
-
-  }
-
-
-
-  public static PollQuestion getQuestion(PollEntity poll) {
-
-    try {
-
-      if ( poll != null ) {
-				return ((com.idega.block.poll.data.PollQuestionHome)com.idega.data.IDOLookup.getHomeLegacy(PollQuestion.class)).findByPrimaryKeyLegacy(poll.getPollQuestionID());
+			if (poll != null) {
+				return ((com.idega.block.poll.data.PollQuestionHome) com.idega.data.IDOLookup.getHomeLegacy(PollQuestion.class)).findByPrimaryKeyLegacy(poll.getPollQuestionID());
 			}
 
-      return null;
+			return null;
 
-    }
+		}
 
-    catch (SQLException e) {
+		catch (SQLException e) {
 
-      return null;
+			return null;
 
-    }
+		}
 
-  }
+	}
 
+	public static IWTimestamp getStartDate(int pollQuestionID) {
 
+		PollQuestion question = getPollQuestion(pollQuestionID);
 
-  public static IWTimestamp getStartDate(int pollQuestionID) {
+		if (question != null) {
 
-    PollQuestion question = getPollQuestion(pollQuestionID);
+			if (question.getStartTime() != null) {
 
+				return new IWTimestamp(question.getStartTime());
 
+			}
 
-    if ( question != null ) {
+		}
 
-      if ( question.getStartTime() != null ) {
+		return null;
 
-        return new IWTimestamp(question.getStartTime());
+	}
 
-      }
+	public static IWTimestamp getEndDate(int pollQuestionID) {
 
-    }
+		PollQuestion question = getPollQuestion(pollQuestionID);
 
+		if (question != null) {
 
+			if (question.getEndTime() != null) {
 
-    return null;
+				return new IWTimestamp(question.getEndTime());
 
-  }
+			}
 
+		}
 
+		return null;
 
-  public static IWTimestamp getEndDate(int pollQuestionID) {
+	}
 
-    PollQuestion question = getPollQuestion(pollQuestionID);
+	public static PollQuestion getPollQuestion(int pollQuestionID) {
 
+		try {
 
+			return ((com.idega.block.poll.data.PollQuestionHome) com.idega.data.IDOLookup.getHomeLegacy(PollQuestion.class)).findByPrimaryKeyLegacy(pollQuestionID);
 
-    if ( question != null ) {
+		}
 
-      if ( question.getEndTime() != null ) {
+		catch (SQLException e) {
 
-        return new IWTimestamp(question.getEndTime());
+			return null;
 
-      }
+		}
 
-    }
+	}
 
+	public static PollAnswer getPollAnswer(int pollAnswerID) {
 
+		try {
 
-    return null;
+			return ((com.idega.block.poll.data.PollAnswerHome) com.idega.data.IDOLookup.getHomeLegacy(PollAnswer.class)).findByPrimaryKeyLegacy(pollAnswerID);
 
-  }
+		}
 
+		catch (SQLException e) {
 
+			return null;
 
-  public static PollQuestion getPollQuestion(int pollQuestionID) {
+		}
 
-    try {
+	}
 
-      return ((com.idega.block.poll.data.PollQuestionHome)com.idega.data.IDOLookup.getHomeLegacy(PollQuestion.class)).findByPrimaryKeyLegacy(pollQuestionID);
+	public static String getLocalizedQuestion(int pollQuestionID, int iLocaleID) {
 
-    }
+		String locString = null;
 
-    catch (SQLException e) {
+		PollQuestion pollQuestion = getPollQuestion(pollQuestionID);
 
-      return null;
+		if (pollQuestion != null) {
 
-    }
+			LocalizedText locText = TextFinder.getLocalizedText(pollQuestion, iLocaleID);
 
-  }
+			if (locText != null) {
 
+				locString = locText.getHeadline();
 
+			}
 
-  public static PollAnswer getPollAnswer(int pollAnswerID) {
+		}
 
-    try {
+		return locString;
 
-      return ((com.idega.block.poll.data.PollAnswerHome)com.idega.data.IDOLookup.getHomeLegacy(PollAnswer.class)).findByPrimaryKeyLegacy(pollAnswerID);
+	}
 
-    }
+	public static String getLocalizedInformation(int pollQuestionID, int iLocaleID) {
 
-    catch (SQLException e) {
+		String locString = null;
 
-      return null;
+		PollQuestion pollQuestion = getPollQuestion(pollQuestionID);
 
-    }
+		if (pollQuestion != null) {
 
-  }
+			LocalizedText locText = TextFinder.getLocalizedText(pollQuestion, iLocaleID);
 
+			if (locText != null) {
 
+				locString = locText.getBody();
 
-  public static String getLocalizedQuestion(int pollQuestionID, int iLocaleID) {
+			}
 
-    String locString = null;
+		}
 
+		if (locString != null) {
 
-
-    PollQuestion pollQuestion = getPollQuestion(pollQuestionID);
-
-    if ( pollQuestion != null ) {
-
-      LocalizedText locText = TextFinder.getLocalizedText(pollQuestion,iLocaleID);
-
-      if ( locText != null ) {
-
-        locString = locText.getHeadline();
-
-      }
-
-    }
-
-
-
-    return locString;
-
-  }
-
-
-
-  public static String getLocalizedInformation(int pollQuestionID, int iLocaleID) {
-
-    String locString = null;
-
-
-
-    PollQuestion pollQuestion = getPollQuestion(pollQuestionID);
-
-    if ( pollQuestion != null ) {
-
-      LocalizedText locText = TextFinder.getLocalizedText(pollQuestion,iLocaleID);
-
-      if ( locText != null ) {
-
-        locString = locText.getBody();
-
-      }
-
-    }
-
-
-
-    if ( locString != null ) {
-
-      if ( locString.length() == 0 ) {
+			if (locString.length() == 0) {
 				locString = null;
 			}
 
-    }
+		}
 
+		return locString;
 
+	}
 
-    return locString;
+	public static PollAnswer[] getAnswers(int pollQuestionID) {
 
-  }
+		try {
 
+			return (PollAnswer[]) GenericEntity.getStaticInstance(PollAnswer.class).findAllByColumn(com.idega.block.poll.data.PollQuestionBMPBean.getColumnNameID(), Integer.toString(pollQuestionID), "=");
 
+		}
 
-  public static PollAnswer[] getAnswers(int pollQuestionID) {
+		catch (SQLException e) {
 
-    try {
+			return null;
 
-      return (PollAnswer[]) GenericEntity.getStaticInstance(PollAnswer.class).findAllByColumn(com.idega.block.poll.data.PollQuestionBMPBean.getColumnNameID(),Integer.toString(pollQuestionID),"=");
+		}
 
-    }
+	}
 
-    catch (SQLException e) {
+	public static String[] getLocalizedAnswers(int pollQuestionID, int iLocaleID) {
 
-      return null;
+		String[] answers = null;
 
-    }
+		PollAnswer[] pollAnswers = getAnswers(pollQuestionID);
 
-  }
+		if (pollAnswers != null) {
 
+			answers = new String[pollAnswers.length];
 
+			for (int a = 0; a < pollAnswers.length; a++) {
 
-  public static String[] getLocalizedAnswers(int pollQuestionID, int iLocaleID) {
+				LocalizedText text = TextFinder.getLocalizedText(pollAnswers[a], iLocaleID);
 
-    String[] answers = null;
+				if (text != null) {
 
+					answers[a] = text.getHeadline();
 
+				}
 
-    PollAnswer[] pollAnswers = getAnswers(pollQuestionID);
+				else {
 
-    if ( pollAnswers != null ) {
+					answers[a] = "Option " + Integer.toString(a + 1);
 
-      answers = new String[pollAnswers.length];
+				}
 
-      for ( int a = 0; a < pollAnswers.length; a++ ) {
+			}
 
-        LocalizedText text = TextFinder.getLocalizedText(pollAnswers[a],iLocaleID);
+		}
 
-        if ( text != null ) {
+		return answers;
 
-          answers[a] = text.getHeadline();
+	}
 
-        }
+	public static String getLocalizedAnswer(int pollAnswerID, int iLocaleID) {
 
-        else {
+		String locString = null;
 
-          answers[a] = "Option "+Integer.toString(a+1);
+		PollAnswer pollAnswer = getPollAnswer(pollAnswerID);
 
-        }
+		if (pollAnswer != null) {
 
-      }
+			LocalizedText locText = TextFinder.getLocalizedText(pollAnswer, iLocaleID);
 
-    }
+			if (locText != null) {
 
+				locString = locText.getHeadline();
 
+			}
 
-    return answers;
+		}
 
-  }
+		return locString;
 
+	}
 
+	public static String[] getAnswerIDs(int pollQuestionID) {
 
-  public static String getLocalizedAnswer(int pollAnswerID, int iLocaleID) {
+		String[] answers = null;
 
-    String locString = null;
+		PollAnswer[] pollAnswers = getAnswers(pollQuestionID);
 
+		if (pollAnswers != null) {
 
+			answers = new String[pollAnswers.length];
 
-    PollAnswer pollAnswer = getPollAnswer(pollAnswerID);
+			for (int a = 0; a < pollAnswers.length; a++) {
 
-    if ( pollAnswer != null ) {
+				answers[a] = Integer.toString(pollAnswers[a].getID());
 
-      LocalizedText locText = TextFinder.getLocalizedText(pollAnswer,iLocaleID);
+			}
 
-      if ( locText != null ) {
+		}
 
-        locString = locText.getHeadline();
+		return answers;
 
-      }
+	}
 
-    }
+	public static void increaseHits(int pollAnswerID) {
 
+		try {
 
+			increaseHits(((com.idega.block.poll.data.PollAnswerHome) com.idega.data.IDOLookup.getHomeLegacy(PollAnswer.class)).findByPrimaryKeyLegacy(pollAnswerID));
 
-    return locString;
+		}
 
-  }
+		catch (SQLException e) {
 
+			e.printStackTrace();
 
+		}
 
-  public static String[] getAnswerIDs(int pollQuestionID) {
+	}
 
-    String[] answers = null;
+	public static void increaseHits(PollAnswer pollAnswer) {
 
+		try {
 
+			pollAnswer.setHits(pollAnswer.getHits() + 1);
 
-    PollAnswer[] pollAnswers = getAnswers(pollQuestionID);
+			pollAnswer.update();
 
-    if ( pollAnswers != null ) {
+		}
 
-      answers = new String[pollAnswers.length];
+		catch (SQLException e) {
 
-      for ( int a = 0; a < pollAnswers.length; a++ ) {
+			e.printStackTrace();
 
-        answers[a] = Integer.toString(pollAnswers[a].getID());
+		}
 
-      }
+	}
 
-    }
+	public static void handleInsert(IWContext iwc) {
 
+		String questionString = iwc.getParameter(_PARAMETER_POLL_QUESTION);
 
+		if (questionString != null) {
 
-    return answers;
+			try {
 
-  }
+				handleInsert(iwc, Integer.parseInt(questionString));
 
+			}
 
+			catch (NumberFormatException e) {
 
-  public static void increaseHits(int pollAnswerID) {
+				e.printStackTrace();
 
-    try {
+			}
 
-      increaseHits(((com.idega.block.poll.data.PollAnswerHome)com.idega.data.IDOLookup.getHomeLegacy(PollAnswer.class)).findByPrimaryKeyLegacy(pollAnswerID));
+		}
 
-    }
+	}
 
-    catch (SQLException e) {
+	public static void handleInsert(IWContext iwc, int pollQuestionID) {
 
-      e.printStackTrace();
+		String pollAnswerID = iwc.getParameter(_PARAMETER_POLL_ANSWER);
 
-    }
+		PollAnswer answer = null;
 
-  }
+		if (pollAnswerID != null) {
 
+			try {
 
+				answer = ((com.idega.block.poll.data.PollAnswerHome) com.idega.data.IDOLookup.getHomeLegacy(PollAnswer.class)).findByPrimaryKeyLegacy(Integer.parseInt(pollAnswerID));
 
-  public static void increaseHits(PollAnswer pollAnswer) {
+			}
 
-    try {
+			catch (Exception e) {
 
-      pollAnswer.setHits(pollAnswer.getHits()+1);
+				answer = null;
 
-      pollAnswer.update();
+			}
 
-    }
+		}
 
-    catch (SQLException e) {
+		if (answer != null && canVote(iwc, pollQuestionID)) {
 
-      e.printStackTrace();
+			increaseHits(answer);
 
-    }
+			Cookie cookie = new Cookie(COOKIE_NAME + Integer.toString(pollQuestionID), "true");
 
-  }
+			cookie.setMaxAge(31 * 24 * 60 * 60);
 
+			cookie.setPath("/");
 
+			iwc.addCookies(cookie);
 
-  public static void handleInsert(IWContext iwc) {
+		}
 
-    String questionString = iwc.getParameter(_PARAMETER_POLL_QUESTION);
+	}
 
-    if ( questionString != null ) {
+	public static boolean canVote(IWContext iwc, int pollQuestionID) {
 
-      try {
+		Cookie[] cookies = iwc.getCookies();
 
-        handleInsert(iwc,Integer.parseInt(questionString));
+		boolean returner = true;
 
-      }
+		if (cookies != null) {
 
-      catch (NumberFormatException e) {
+			if (cookies.length > 0) {
 
-        e.printStackTrace();
+				for (int i = 0; i < cookies.length; i++) {
 
-      }
+					if (cookies[i].getName().equals(COOKIE_NAME + Integer.toString(pollQuestionID))) {
 
-    }
+						returner = false;
 
-  }
+						continue;
 
+					}
 
+				}
 
-  public static void handleInsert(IWContext iwc, int pollQuestionID) {
+			}
 
-    String pollAnswerID = iwc.getParameter(_PARAMETER_POLL_ANSWER);
+		}
 
+		return returner;
 
+	}
 
-    PollAnswer answer = null;
+	public static boolean thisObjectSubmitted(String parameterString) {
 
-    if ( pollAnswerID != null ) {
+		boolean returner = false;
 
-      try {
+		if (parameterString != null) {
 
-        answer = ((com.idega.block.poll.data.PollAnswerHome)com.idega.data.IDOLookup.getHomeLegacy(PollAnswer.class)).findByPrimaryKeyLegacy(Integer.parseInt(pollAnswerID));
+			if (parameterString.equals(_PARAMETER_TRUE)) {
 
-      }
+				returner = true;
 
-      catch (Exception e) {
+			}
 
-        answer = null;
+		}
 
-      }
+		return returner;
 
-    }
+	}
 
+	public static DropdownMenu getQuestions(String name, int iLocaleId) {
 
+		DropdownMenu drp = new DropdownMenu(name);
 
-    if ( answer != null && canVote(iwc, pollQuestionID) ) {
+		drp.addMenuElementFirst("-1", "");
 
-      increaseHits(answer);
+		PollQuestion[] pollQuestion = null;
 
+		try {
 
+			pollQuestion = (PollQuestion[]) GenericEntity.getStaticInstance(PollQuestion.class).findAll();
 
-      Cookie cookie = new Cookie(COOKIE_NAME+Integer.toString(pollQuestionID),"true");
+		}
 
-      cookie.setMaxAge(31 * 24 * 60 * 60);
+		catch (SQLException e) {
 
-      cookie.setPath("/");
+			pollQuestion = null;
 
-      iwc.addCookies(cookie);
+		}
 
-    }
+		if (pollQuestion != null) {
 
-  }
+			for (int a = 0; a < pollQuestion.length; a++) {
 
+				LocalizedText locText = TextFinder.getLocalizedText(pollQuestion[a], iLocaleId);
 
+				String locString = "No question in this language";
 
-  public static boolean canVote(IWContext iwc, int pollQuestionID) {
+				if (locText != null) {
 
-    Cookie[] cookies = iwc.getCookies();
+					locString = locText.getHeadline();
 
-    boolean returner = true;
+				}
 
+				drp.addMenuElement(pollQuestion[a].getID(), locString);
 
+			}
 
-    if (cookies != null) {
+		}
 
-      if (cookies.length > 0) {
+		return drp;
 
-        for (int i = 0 ; i < cookies.length ; i++) {
+	}
 
-          if ( cookies[i].getName().equals(COOKIE_NAME+Integer.toString(pollQuestionID)) ) {
+	public static List getPollQuestions(int pollID) {
 
-            returner = false;
+		try {
 
-            continue;
+			return getPollQuestions(((com.idega.block.poll.data.PollEntityHome) com.idega.data.IDOLookup.getHomeLegacy(PollEntity.class)).findByPrimaryKeyLegacy(pollID));
 
-          }
+		}
 
-        }
+		catch (SQLException e) {
 
-      }
+			return null;
 
-    }
+		}
 
+	}
 
+	public static List getPollQuestions(PollEntity poll) {
 
-    return returner;
+		try {
 
-  }
+			return com.idega.data.EntityFinder.findRelated(poll, GenericEntity.getStaticInstance(PollQuestion.class));
 
+		}
 
+		catch (SQLException e) {
 
-  public static boolean thisObjectSubmitted(String parameterString){
+			return null;
 
-    boolean returner = false;
+		}
 
+	}
 
+	public static DropdownMenu getQuestions(String name, int userID, int iLocaleId, boolean superAdmin) {
 
-    if (parameterString != null){
+		DropdownMenu drp = new DropdownMenu(name);
 
-      if (parameterString.equals(_PARAMETER_TRUE)){
+		drp.addMenuElementFirst("-1", "");
 
-        returner = true;
+		PollQuestion[] pollQuestion = null;
 
-      }
+		try {
 
-    }
-
-
-
-    return returner;
-
-  }
-
-
-
-  public static DropdownMenu getQuestions(String name, int iLocaleId) {
-
-    DropdownMenu drp = new DropdownMenu(name);
-
-      drp.addMenuElementFirst("-1","");
-
-    PollQuestion[] pollQuestion = null;
-
-
-
-    try {
-
-      pollQuestion = (PollQuestion[]) GenericEntity.getStaticInstance(PollQuestion.class).findAll();
-
-    }
-
-    catch (SQLException e) {
-
-      pollQuestion = null;
-
-    }
-
-
-
-    if( pollQuestion != null ) {
-
-      for ( int a = 0; a < pollQuestion.length; a++) {
-
-        LocalizedText locText = TextFinder.getLocalizedText(pollQuestion[a],iLocaleId);
-
-        String locString = "No question in this language";
-
-        if ( locText != null ) {
-
-          locString = locText.getHeadline();
-
-        }
-
-        drp.addMenuElement(pollQuestion[a].getID(),locString);
-
-      }
-
-    }
-
-    return drp;
-
-  }
-
-
-
-  public static List getPollQuestions(int pollID) {
-
-    try {
-
-      return getPollQuestions(((com.idega.block.poll.data.PollEntityHome)com.idega.data.IDOLookup.getHomeLegacy(PollEntity.class)).findByPrimaryKeyLegacy(pollID));
-
-    }
-
-    catch (SQLException e) {
-
-      return null;
-
-    }
-
-  }
-
-
-
-  public static List getPollQuestions(PollEntity poll) {
-
-    try {
-
-      return com.idega.data.EntityFinder.findRelated(poll,GenericEntity.getStaticInstance(PollQuestion.class));
-
-    }
-
-    catch (SQLException e) {
-
-      return null;
-
-    }
-
-  }
-
-
-
-  public static DropdownMenu getQuestions(String name, int userID, int iLocaleId, boolean superAdmin) {
-
-    DropdownMenu drp = new DropdownMenu(name);
-
-      drp.addMenuElementFirst("-1","");
-
-    PollQuestion[] pollQuestion = null;
-
-
-
-    try {
-
-      if ( superAdmin ) {
+			if (superAdmin) {
 				pollQuestion = (PollQuestion[]) GenericEntity.getStaticInstance(PollQuestion.class).findAll();
 			}
 			else {
-				pollQuestion = (PollQuestion[]) GenericEntity.getStaticInstance(PollQuestion.class).findAllByColumn(com.idega.block.poll.data.PollQuestionBMPBean.getColumnNameUserID(),Integer.toString(userID),"=");
+				pollQuestion = (PollQuestion[]) GenericEntity.getStaticInstance(PollQuestion.class).findAllByColumn(com.idega.block.poll.data.PollQuestionBMPBean.getColumnNameUserID(), Integer.toString(userID), "=");
 			}
 
-    }
+		}
 
-    catch (SQLException e) {
+		catch (SQLException e) {
 
-      pollQuestion = null;
+			pollQuestion = null;
 
-    }
+		}
 
+		if (pollQuestion != null) {
 
+			for (int a = 0; a < pollQuestion.length; a++) {
 
-    if( pollQuestion != null ) {
+				LocalizedText locText = TextFinder.getLocalizedText(pollQuestion[a], iLocaleId);
 
-      for ( int a = 0; a < pollQuestion.length; a++) {
+				String locString = "No question in this language";
 
-        LocalizedText locText = TextFinder.getLocalizedText(pollQuestion[a],iLocaleId);
+				if (locText != null) {
 
-        String locString = "No question in this language";
+					locString = locText.getHeadline();
 
-        if ( locText != null ) {
+				}
 
-          locString = locText.getHeadline();
+				drp.addMenuElement(pollQuestion[a].getID(), locString);
 
-        }
+			}
 
-        drp.addMenuElement(pollQuestion[a].getID(),locString);
+		}
 
-      }
+		return drp;
 
-    }
+	}
 
-    return drp;
+	public static int savePollQuestion(int userID, int pollID, int pollQuestionID, String pollQuestionString, String pollInformationString, String pollStartDate, String pollEndDate, int iLocaleID) {
 
-  }
+		boolean update = false;
 
+		boolean newLocText = false;
 
+		int _pollQuestionID = -1;
 
-  public static int savePollQuestion(int userID,int pollID,int pollQuestionID,String pollQuestionString,String pollInformationString,String pollStartDate,String pollEndDate,int iLocaleID) {
+		if (pollQuestionID != -1) {
 
-    boolean update = false;
+			update = true;
 
-    boolean newLocText = false;
+		}
 
-    int _pollQuestionID = -1;
+		PollQuestion pollQuestion = ((com.idega.block.poll.data.PollQuestionHome) com.idega.data.IDOLookup.getHomeLegacy(PollQuestion.class)).createLegacy();
 
+		if (update) {
 
+			try {
 
-    if ( pollQuestionID != -1 ) {
+				pollQuestion = ((com.idega.block.poll.data.PollQuestionHome) com.idega.data.IDOLookup.getHomeLegacy(PollQuestion.class)).findByPrimaryKeyLegacy(pollQuestionID);
 
-      update = true;
+			}
 
-    }
+			catch (SQLException e) {
 
+				pollQuestion = ((com.idega.block.poll.data.PollQuestionHome) com.idega.data.IDOLookup.getHomeLegacy(PollQuestion.class)).createLegacy();
 
+				update = false;
 
-    PollQuestion pollQuestion = ((com.idega.block.poll.data.PollQuestionHome)com.idega.data.IDOLookup.getHomeLegacy(PollQuestion.class)).createLegacy();
+			}
 
-    if ( update ) {
+		}
 
-      try {
+		if (pollStartDate != null && pollStartDate.length() > 0) {
 
-        pollQuestion = ((com.idega.block.poll.data.PollQuestionHome)com.idega.data.IDOLookup.getHomeLegacy(PollQuestion.class)).findByPrimaryKeyLegacy(pollQuestionID);
+			pollQuestion.setStartTime(new IWTimestamp(pollStartDate).getTimestamp());
 
-      }
+		}
 
-      catch (SQLException e) {
+		if (pollEndDate != null && pollEndDate.length() > 0) {
 
-        pollQuestion = ((com.idega.block.poll.data.PollQuestionHome)com.idega.data.IDOLookup.getHomeLegacy(PollQuestion.class)).createLegacy();
+			pollQuestion.setEndTime(new IWTimestamp(pollEndDate).getTimestamp());
 
-        update = false;
+		}
 
-      }
+		if (!update) {
 
-    }
+			try {
 
+				pollQuestion.setUserID(userID);
 
+				pollQuestion.insert();
 
-    if ( pollStartDate != null && pollStartDate.length() > 0 ) {
+				_pollQuestionID = pollQuestion.getID();
 
-      pollQuestion.setStartTime(new IWTimestamp(pollStartDate).getTimestamp());
+			}
 
-    }
+			catch (SQLException e) {
 
-    if ( pollEndDate != null && pollEndDate.length() > 0 ) {
+				e.printStackTrace(System.err);
 
-      pollQuestion.setEndTime(new IWTimestamp(pollEndDate).getTimestamp());
+			}
 
-    }
+		}
 
+		else {
 
+			try {
 
-    if ( !update ) {
+				pollQuestion.update();
 
-      try {
+				_pollQuestionID = pollQuestion.getID();
 
-        pollQuestion.setUserID(userID);
+			}
 
-        pollQuestion.insert();
+			catch (SQLException e) {
 
-        _pollQuestionID = pollQuestion.getID();
+				e.printStackTrace(System.err);
 
-      }
+			}
 
-      catch (SQLException e) {
+		}
 
-        e.printStackTrace(System.err);
+		LocalizedText locText = TextFinder.getLocalizedText(pollQuestion, iLocaleID);
 
-      }
+		if (locText == null) {
 
-    }
+			locText = ((com.idega.block.text.data.LocalizedTextHome) com.idega.data.IDOLookup.getHomeLegacy(LocalizedText.class)).createLegacy();
 
-    else {
+			newLocText = true;
 
-      try {
+		}
 
-        pollQuestion.update();
+		locText.setHeadline(pollQuestionString);
 
-        _pollQuestionID = pollQuestion.getID();
+		locText.setBody(pollInformationString);
 
-      }
+		locText.setCreated(com.idega.util.IWTimestamp.getTimestampRightNow());
 
-      catch (SQLException e) {
+		if (newLocText) {
 
-        e.printStackTrace(System.err);
+			locText.setLocaleId(iLocaleID);
 
-      }
+			try {
 
-    }
+				locText.insert();
 
+				locText.addTo(pollQuestion);
 
+			}
 
+			catch (SQLException e) {
 
+				e.printStackTrace(System.err);
 
-    LocalizedText locText = TextFinder.getLocalizedText(pollQuestion,iLocaleID);
+			}
 
-    if ( locText == null ) {
+		}
 
-      locText = ((com.idega.block.text.data.LocalizedTextHome)com.idega.data.IDOLookup.getHomeLegacy(LocalizedText.class)).createLegacy();
+		else {
 
-      newLocText = true;
+			try {
 
-    }
+				locText.update();
 
+			}
 
+			catch (SQLException e) {
 
-    locText.setHeadline(pollQuestionString);
+				e.printStackTrace(System.err);
 
-    locText.setBody(pollInformationString);
+			}
 
-    locText.setCreated(com.idega.util.IWTimestamp.getTimestampRightNow());
+		}
 
+		return _pollQuestionID;
 
+	}
 
-    if ( newLocText ) {
+	public static int savePollAnswer(int pollQuestionID, int pollAnswerID, String pollAnswerString, int iLocaleID) {
 
-      locText.setLocaleId(iLocaleID);
+		boolean update = false;
 
-      try {
+		boolean newLocText = false;
 
-        locText.insert();
+		int _pollAnswerID = -1;
 
-        locText.addTo(pollQuestion);
+		if (pollAnswerID != -1) {
 
-      }
+			update = true;
 
-      catch (SQLException e) {
+		}
 
-        e.printStackTrace(System.err);
+		PollAnswer pollAnswer = ((com.idega.block.poll.data.PollAnswerHome) com.idega.data.IDOLookup.getHomeLegacy(PollAnswer.class)).createLegacy();
 
-      }
+		if (update) {
 
-    }
+			try {
 
-    else {
+				pollAnswer = ((com.idega.block.poll.data.PollAnswerHome) com.idega.data.IDOLookup.getHomeLegacy(PollAnswer.class)).findByPrimaryKeyLegacy(pollAnswerID);
 
-      try {
+			}
 
-        locText.update();
+			catch (SQLException e) {
 
-      }
+				pollAnswer = ((com.idega.block.poll.data.PollAnswerHome) com.idega.data.IDOLookup.getHomeLegacy(PollAnswer.class)).createLegacy();
 
-      catch (SQLException e) {
+				update = false;
 
-        e.printStackTrace(System.err);
+			}
 
-      }
+		}
 
-    }
+		if (!update) {
 
+			pollAnswer.setPollQuestionID(pollQuestionID);
 
+			pollAnswer.setHits(0);
 
-    return _pollQuestionID;
+			try {
 
+				pollAnswer.insert();
 
+				_pollAnswerID = pollAnswer.getID();
 
-  }
+			}
 
+			catch (SQLException e) {
 
+				e.printStackTrace(System.err);
 
-  public static int savePollAnswer(int pollQuestionID,int pollAnswerID,String pollAnswerString,int iLocaleID) {
+			}
 
-    boolean update = false;
+		}
 
-    boolean newLocText = false;
+		else {
 
-    int _pollAnswerID = -1;
+			_pollAnswerID = pollAnswer.getID();
 
+		}
 
+		LocalizedText locText = TextFinder.getLocalizedText(pollAnswer, iLocaleID);
 
-    if ( pollAnswerID != -1 ) {
+		if (locText == null) {
 
-      update = true;
+			locText = ((com.idega.block.text.data.LocalizedTextHome) com.idega.data.IDOLookup.getHomeLegacy(LocalizedText.class)).createLegacy();
 
-    }
+			newLocText = true;
 
+		}
 
+		locText.setHeadline(pollAnswerString);
 
-    PollAnswer pollAnswer = ((com.idega.block.poll.data.PollAnswerHome)com.idega.data.IDOLookup.getHomeLegacy(PollAnswer.class)).createLegacy();
+		if (newLocText) {
 
-    if ( update ) {
+			locText.setLocaleId(iLocaleID);
 
-      try {
+			try {
 
-        pollAnswer = ((com.idega.block.poll.data.PollAnswerHome)com.idega.data.IDOLookup.getHomeLegacy(PollAnswer.class)).findByPrimaryKeyLegacy(pollAnswerID);
+				locText.insert();
 
-      }
+				locText.addTo(pollAnswer);
 
-      catch (SQLException e) {
+			}
 
-        pollAnswer = ((com.idega.block.poll.data.PollAnswerHome)com.idega.data.IDOLookup.getHomeLegacy(PollAnswer.class)).createLegacy();
+			catch (SQLException e) {
 
-        update = false;
+				e.printStackTrace(System.err);
 
-      }
+			}
 
-    }
+		}
 
+		else {
 
+			try {
 
+				locText.update();
 
+			}
 
-    if ( !update ) {
+			catch (SQLException e) {
 
-      pollAnswer.setPollQuestionID(pollQuestionID);
+				e.printStackTrace(System.err);
 
-      pollAnswer.setHits(0);
+			}
 
-      try {
+		}
 
-        pollAnswer.insert();
+		return _pollAnswerID;
 
-        _pollAnswerID = pollAnswer.getID();
+	}
 
-      }
+	public static boolean deletePoll(PollEntity poll) {
 
-      catch (SQLException e) {
+		try {
 
-        e.printStackTrace(System.err);
+			if (poll != null) {
 
-      }
+				poll.delete();
 
-    }
+			}
 
-    else {
+			return true;
 
-      _pollAnswerID = pollAnswer.getID();
+		}
 
-    }
+		catch (SQLException e) {
 
+			e.printStackTrace(System.err);
 
+			return false;
 
+		}
 
+	}
 
-    LocalizedText locText = TextFinder.getLocalizedText(pollAnswer,iLocaleID);
+	public static void deletePollQuestion(int pollQuestionID) {
 
-    if ( locText == null ) {
+		try {
 
-      locText = ((com.idega.block.text.data.LocalizedTextHome)com.idega.data.IDOLookup.getHomeLegacy(LocalizedText.class)).createLegacy();
+			Connection Conn = null;
 
-      newLocText = true;
+			PollQuestion pollQuestion = ((com.idega.block.poll.data.PollQuestionHome) com.idega.data.IDOLookup.getHomeLegacy(PollQuestion.class)).findByPrimaryKeyLegacy(pollQuestionID);
 
-    }
+			try {
 
+				Conn = ConnectionBroker.getConnection();
 
+				Conn.createStatement().executeUpdate("update " + com.idega.block.poll.data.PollEntityBMPBean.getEntityTableName() + " set " + com.idega.block.poll.data.PollQuestionBMPBean.getColumnNameID() + " = null where " + com.idega.block.poll.data.PollQuestionBMPBean.getColumnNameID() + " = " + Integer.toString(pollQuestionID));
 
-    locText.setHeadline(pollAnswerString);
+			}
 
+			catch (SQLException e) {
 
+				e.printStackTrace(System.err);
 
-    if ( newLocText ) {
+			}
 
-      locText.setLocaleId(iLocaleID);
+			finally {
 
-      try {
+				ConnectionBroker.freeConnection(Conn);
 
-        locText.insert();
+			}
 
-        locText.addTo(pollAnswer);
+			PollAnswer[] pollAnswers = PollBusiness.getAnswers(pollQuestionID);
 
-      }
+			if (pollAnswers != null) {
 
-      catch (SQLException e) {
+				for (int a = 0; a < pollAnswers.length; a++) {
 
-        e.printStackTrace(System.err);
+					pollAnswers[a].delete();
 
-      }
+				}
 
-    }
+			}
 
-    else {
+			pollQuestion.removeFrom(GenericEntity.getStaticInstance(PollEntity.class));
 
-      try {
+			pollQuestion.delete();
 
-        locText.update();
+		}
 
-      }
+		catch (SQLException e) {
 
-      catch (SQLException e) {
+			e.printStackTrace(System.err);
 
-        e.printStackTrace(System.err);
+		}
 
-      }
+	}
 
-    }
+	public static void deletePollAnswer(int pollAnswerID) {
 
+		try {
 
+			((com.idega.block.poll.data.PollAnswerHome) com.idega.data.IDOLookup.getHomeLegacy(PollAnswer.class)).findByPrimaryKeyLegacy(pollAnswerID).delete();
 
-    return _pollAnswerID;
+		}
 
-  }
+		catch (SQLException e) {
 
+			e.printStackTrace(System.err);
 
+		}
 
-  public static boolean deletePoll(PollEntity poll) {
+	}
 
-    try {
+	public static void savePoll(int pollID, int pollQuestionID, int InstanceId, String sAttribute) {
 
-      if ( poll != null ) {
+		try {
 
-        poll.delete();
+			boolean update = false;
 
-      }
+			PollEntity poll = ((com.idega.block.poll.data.PollEntityHome) com.idega.data.IDOLookup.getHomeLegacy(PollEntity.class)).createLegacy();
 
-      return true;
+			if (pollID != -1) {
 
-    }
+				update = true;
 
-    catch (SQLException e) {
+				try {
 
-      e.printStackTrace(System.err);
+					poll = ((com.idega.block.poll.data.PollEntityHome) com.idega.data.IDOLookup.getHomeLegacy(PollEntity.class)).findByPrimaryKeyLegacy(pollID);
 
-      return false;
+				}
 
-    }
+				catch (SQLException e) {
 
-  }
+					poll = ((com.idega.block.poll.data.PollEntityHome) com.idega.data.IDOLookup.getHomeLegacy(PollEntity.class)).createLegacy();
 
+					update = false;
 
+				}
 
-  public static void deletePollQuestion(int pollQuestionID) {
+			}
 
-    try {
+			if (sAttribute != null) {
 
-      Connection Conn = null;
+				PollEntity pollAttribute = PollFinder.getPoll(sAttribute);
 
-      PollQuestion pollQuestion = ((com.idega.block.poll.data.PollQuestionHome)com.idega.data.IDOLookup.getHomeLegacy(PollQuestion.class)).findByPrimaryKeyLegacy(pollQuestionID);
+				if (pollAttribute != null) {
 
-      try {
+					poll = pollAttribute;
 
-        Conn = ConnectionBroker.getConnection();
+					update = true;
 
-        Conn.createStatement().executeUpdate("update "+com.idega.block.poll.data.PollEntityBMPBean.getEntityTableName()+" set "+com.idega.block.poll.data.PollQuestionBMPBean.getColumnNameID()+" = null where "+com.idega.block.poll.data.PollQuestionBMPBean.getColumnNameID()+" = "+Integer.toString(pollQuestionID));
+				}
 
-      }
+				poll.setAttribute(sAttribute);
 
-      catch (SQLException e) {
+			}
+			else {
+				poll.setAttribute("BLANK_VALUE");
+			}
 
-        e.printStackTrace(System.err);
+			if (pollQuestionID != -1) {
 
-      }
+				poll.setPollQuestionID(pollQuestionID);
 
-      finally {
+			}
 
-        ConnectionBroker.freeConnection(Conn);
+			if (update) {
 
-      }
+				try {
 
-      PollAnswer[] pollAnswers = PollBusiness.getAnswers(pollQuestionID);
+					poll.update();
 
-      if ( pollAnswers != null ) {
+				}
 
-        for ( int a = 0; a < pollAnswers.length; a++ ) {
+				catch (SQLException e) {
 
-          pollAnswers[a].delete();
+					e.printStackTrace(System.err);
 
-        }
+				}
 
-      }
+			}
 
-      pollQuestion.removeFrom(GenericEntity.getStaticInstance(PollEntity.class));
+			else {
 
-      pollQuestion.delete();
+				poll.insert();
 
-    }
+				if (InstanceId > 0) {
 
-    catch (SQLException e) {
+					System.err.println("instance er til");
 
-      e.printStackTrace(System.err);
+					ICObjectInstance objIns = ((com.idega.core.component.data.ICObjectInstanceHome) com.idega.data.IDOLookup.getHomeLegacy(ICObjectInstance.class)).findByPrimaryKeyLegacy(InstanceId);
 
-    }
+					System.err.println(" object instance " + objIns.getID() + ", " + objIns.getName());
 
-  }
+					poll.addTo(objIns);
 
+				}
 
+			}
 
-  public static void deletePollAnswer(int pollAnswerID) {
+			if (pollQuestionID != -1) {
 
-    try {
+				addToPoll(poll, pollQuestionID);
 
-      ((com.idega.block.poll.data.PollAnswerHome)com.idega.data.IDOLookup.getHomeLegacy(PollAnswer.class)).findByPrimaryKeyLegacy(pollAnswerID).delete();
+			}
 
-    }
+		}
 
-    catch (SQLException e) {
+		catch (Exception e) {
 
-      e.printStackTrace(System.err);
+			e.printStackTrace();
 
-    }
+		}
 
-  }
+	}
 
+	public static void addToPoll(PollEntity poll, int pollQuestionID) {
 
+		try {
 
-  public static void savePoll(int pollID,int pollQuestionID,int InstanceId,String sAttribute){
+			PollQuestion question = getPollQuestion(pollQuestionID);
 
-    try {
+			if (question != null) {
 
-      boolean update = false;
+				PollQuestion[] polls = (PollQuestion[]) poll.findRelated(((com.idega.block.poll.data.PollQuestionHome) com.idega.data.IDOLookup.getHomeLegacy(PollQuestion.class)).findByPrimaryKeyLegacy(pollQuestionID));
 
+				if (polls == null || polls.length == 0) {
 
+					poll.addTo(question);
 
-      PollEntity poll = ((com.idega.block.poll.data.PollEntityHome)com.idega.data.IDOLookup.getHomeLegacy(PollEntity.class)).createLegacy();
+				}
 
-      if ( pollID != -1 ) {
+			}
 
-        update = true;
+		}
 
-        try {
+		catch (Exception e) {
 
-          poll = ((com.idega.block.poll.data.PollEntityHome)com.idega.data.IDOLookup.getHomeLegacy(PollEntity.class)).findByPrimaryKeyLegacy(pollID);
+			e.printStackTrace(System.err);
 
-        }
+		}
 
-        catch (SQLException e) {
+	}
 
-          poll = ((com.idega.block.poll.data.PollEntityHome)com.idega.data.IDOLookup.getHomeLegacy(PollEntity.class)).createLegacy();
+	public static int getNumberOfAnswers(int pollQuestionID) {
 
-          update = false;
+		try {
 
-        }
+			return getNumberOfAnswers(((com.idega.block.poll.data.PollQuestionHome) com.idega.data.IDOLookup.getHomeLegacy(PollQuestion.class)).findByPrimaryKeyLegacy(pollQuestionID));
 
-      }
+		}
 
+		catch (SQLException e) {
 
+			return -1;
 
-      if(sAttribute != null){
+		}
 
-        PollEntity pollAttribute = PollFinder.getPoll(sAttribute);
+	}
 
-        if ( pollAttribute != null ) {
+	public static int getNumberOfAnswers(PollQuestion pollQuestion) {
 
-          poll = pollAttribute;
+		try {
 
-          update = true;
+			return pollQuestion.getNumberOfRecords("select count(*) from po_poll_answer where " + pollQuestion.getIDColumnName() + "=" + Integer.toString(pollQuestion.getID()));
 
-        }
+		}
 
-        poll.setAttribute(sAttribute);
+		catch (SQLException e) {
 
-      }
-      else {
-      		poll.setAttribute("BLANK_VALUE");
-      }
+			return -1;
 
+		}
 
+	}
 
-      if ( pollQuestionID != -1 ) {
+	public static PollQuestion getPollByDate(PollEntity poll, IWTimestamp date) {
 
-        poll.setPollQuestionID(pollQuestionID);
+		try {
 
-      }
+			boolean isActive = false;
 
+			List polls = getPollQuestions(poll);
 
+			if (polls != null) {
 
-      if ( update ) {
+				for (int a = 0; a < polls.size(); a++) {
 
-        try {
+					IWTimestamp before = new IWTimestamp(((PollQuestion) polls.get(a)).getStartTime());
 
-          poll.update();
+					IWTimestamp after = new IWTimestamp(((PollQuestion) polls.get(a)).getEndTime());
 
-        }
+					if (before != null) {
 
-        catch (SQLException e) {
+						if (date.isLaterThan(before)) {
 
-          e.printStackTrace(System.err);
+							isActive = true;
 
-        }
+						}
 
-      }
+						else {
 
-      else {
+							isActive = false;
 
-        poll.insert();
+						}
 
-        if(InstanceId > 0){
+					}
 
-          System.err.println("instance er til");
+					if (after != null) {
 
-          ICObjectInstance objIns = ((com.idega.core.component.data.ICObjectInstanceHome)com.idega.data.IDOLookup.getHomeLegacy(ICObjectInstance.class)).findByPrimaryKeyLegacy(InstanceId);
+						if (after.isLaterThan(date) && isActive) {
 
-          System.err.println(" object instance "+objIns.getID() +", "+ objIns.getName());
+							isActive = true;
 
-          poll.addTo(objIns);
+						}
 
-        }
+						else {
 
-      }
+							isActive = false;
 
+						}
 
+					}
 
-      if ( pollQuestionID != -1 ) {
+					if (isActive) {
 
-        addToPoll(poll,pollQuestionID);
+						return (PollQuestion) polls.get(a);
 
-      }
+					}
 
-    }
+				}
 
-    catch(Exception e) {
+			}
 
-      e.printStackTrace();
+			return null;
 
-    }
+		}
 
-  }
+		catch (Exception e) {
 
+			return null;
 
+		}
 
-  public static void addToPoll(PollEntity poll, int pollQuestionID) {
+	}
 
-    try {
+	public static void setPollQuestion(PollEntity poll, PollQuestion pollQuestion) {
 
-      PollQuestion question = getPollQuestion(pollQuestionID);
+		if (pollQuestion != null) {
 
-      if ( question != null ) {
+			poll.setPollQuestionID(pollQuestion.getID());
 
-        PollQuestion[] polls = (PollQuestion[]) poll.findRelated(((com.idega.block.poll.data.PollQuestionHome)com.idega.data.IDOLookup.getHomeLegacy(PollQuestion.class)).findByPrimaryKeyLegacy(pollQuestionID));
+			try {
 
-        if ( polls == null || polls.length == 0 ) {
+				poll.update();
 
-          poll.addTo(question);
+			}
 
-        }
+			catch (SQLException e) {
 
-      }
+				e.printStackTrace(System.err);
 
-    }
+			}
 
-    catch (Exception e) {
+		}
 
-      e.printStackTrace(System.err);
+	}
 
-    }
+	public static void setPollID(IWContext iwc, int icObjectInstanceID, int pollID) {
+		Map map = (Map) iwc.getApplicationAttribute("attribute_poll_instance");
+		if (map == null) {
+			map = new HashMap();
+		}
 
-  }
+		map.put(new Integer(icObjectInstanceID), new Integer(pollID));
+		iwc.setApplicationAttribute("attribute_poll_instance", map);
+	}
 
+	public static Integer getPollID(IWContext iwc, int icObjectInstanceID) {
+		Map map = (Map) iwc.getApplicationAttribute("attribute_poll_instance");
+		if (map == null) {
+			map = new HashMap();
+		}
+		return (Integer) map.get(new Integer(icObjectInstanceID));
+	}
 
+	public static void setPollQuestionID(IWContext iwc, int pollID, int pollQuestionID) {
+		Map map = (Map) iwc.getApplicationAttribute("attribute_poll_questions");
+		if (map == null) {
+			map = new HashMap();
+		}
 
-  public static int getNumberOfAnswers(int pollQuestionID) {
+		map.put(new Integer(pollID), new Integer(pollQuestionID));
+		iwc.setApplicationAttribute("attribute_poll_questions", map);
+	}
 
-    try {
-
-      return getNumberOfAnswers(((com.idega.block.poll.data.PollQuestionHome)com.idega.data.IDOLookup.getHomeLegacy(PollQuestion.class)).findByPrimaryKeyLegacy(pollQuestionID));
-
-    }
-
-    catch (SQLException e) {
-
-      return -1;
-
-    }
-
-  }
-
-
-
-  public static int getNumberOfAnswers(PollQuestion pollQuestion) {
-
-    try {
-
-      return pollQuestion.getNumberOfRecords("select count(*) from po_poll_answer where "+pollQuestion.getIDColumnName()+"="+Integer.toString(pollQuestion.getID()));
-
-    }
-
-    catch (SQLException e) {
-
-      return -1;
-
-    }
-
-  }
-
-
-
-  public static PollQuestion getPollByDate(PollEntity poll, IWTimestamp date) {
-
-    try {
-
-      boolean isActive = false;
-
-      List polls = getPollQuestions(poll);
-
-
-
-      if ( polls != null ) {
-
-        for ( int a = 0; a < polls.size(); a++ ) {
-
-          IWTimestamp before = new IWTimestamp(((PollQuestion) polls.get(a)).getStartTime());
-
-          IWTimestamp after = new IWTimestamp(((PollQuestion) polls.get(a)).getEndTime());
-
-
-
-          if ( before != null ) {
-
-            if ( date.isLaterThan(before) ) {
-
-              isActive = true;
-
-            }
-
-            else {
-
-              isActive = false;
-
-            }
-
-          }
-
-          if ( after != null ) {
-
-            if ( after.isLaterThan(date) && isActive ) {
-
-              isActive = true;
-
-            }
-
-            else {
-
-              isActive = false;
-
-            }
-
-          }
-
-
-
-          if ( isActive ) {
-
-            return (PollQuestion) polls.get(a);
-
-          }
-
-        }
-
-      }
-
-      return null;
-
-    }
-
-    catch (Exception e) {
-
-      return null;
-
-    }
-
-  }
-
-
-
-  public static void setPollQuestion(PollEntity poll,PollQuestion pollQuestion) {
-
-    if ( pollQuestion != null ) {
-
-      poll.setPollQuestionID(pollQuestion.getID());
-
-      try {
-
-        poll.update();
-
-      }
-
-      catch (SQLException e) {
-
-        e.printStackTrace(System.err);
-
-      }
-
-    }
-
-  }
-
+	public static Integer getPollQuestionID(IWContext iwc, int pollID) {
+		Map map = (Map) iwc.getApplicationAttribute("attribute_poll_questions");
+		if (map == null) {
+			map = new HashMap();
+		}
+		return (Integer) map.get(new Integer(pollID));
+	}
 }
