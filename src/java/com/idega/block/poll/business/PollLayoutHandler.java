@@ -1,5 +1,5 @@
 /*
- * $Id: PollLayoutHandler.java,v 1.6 2004/06/28 14:07:44 thomas Exp $
+ * $Id: PollLayoutHandler.java,v 1.7 2007/08/14 12:32:51 alexis Exp $
  *
  * Copyright (C) 2001 Idega hf. All Rights Reserved.
  *
@@ -38,7 +38,7 @@ public class PollLayoutHandler implements ICPropertyHandler {
   /**
    *
    */
-  public PresentationObject getHandlerObject(String name, String value, IWContext iwc) {
+  public PresentationObject getHandlerObject(String name, String value, IWContext iwc, boolean oldGenerationHandler, String instanceId, String method) {
     DropdownMenu menu = new DropdownMenu(name);
     menu.addMenuElement("","Select:");
     menu.addMenuElement(Poll.RADIO_BUTTON_VIEW,"Button view");
