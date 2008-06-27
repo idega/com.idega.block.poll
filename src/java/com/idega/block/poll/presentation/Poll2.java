@@ -85,8 +85,15 @@ public class Poll2 extends Block implements Builderaware {
 	public static final int LINK_VIEW = 2;
 
 	private int _layout = LINK_VIEW;
+	
+	public static String CACHE_KEY = "poll2_cache";
+
+	public String getCacheKey() {
+		return CACHE_KEY;
+	}
 		
 	public Poll2() {
+		super.setCacheable(getCacheKey(), 60 * 60 * 8);
 		setDefaultValues();
 	}
 
@@ -142,7 +149,7 @@ public class Poll2 extends Block implements Builderaware {
 		}
 
 		if (this._isAdmin) {
-			getMainLayer().add(getAdminPart(this._pollID, this._newObjInst, this._newWithAttribute));		
+			getMainLayer().add(getAdminPart(this._pollID, this._newObjInst, this._newWithAttribute));
 		}
 
 		getMainLayer().add(getPoll(iwc, poll));
@@ -195,6 +202,16 @@ public class Poll2 extends Block implements Builderaware {
 			if (pollByDate) {
 				PollBusiness.setPollQuestion(poll, pollQuestion);
 			}
+		}
+		
+		int ICObjectInstanceID = getICObjectInstanceID();
+		if (poll != null && PollBusiness.getPollID(iwc, ICObjectInstanceID) == null) {
+			PollBusiness.setPollID(iwc, ICObjectInstanceID, ((Integer) poll.getPrimaryKey()).intValue());
+			System.out.println("Setting poll...");
+		}
+		if (poll != null && pollQuestion != null && PollBusiness.getPollQuestionID(iwc, ((Integer) poll.getPrimaryKey()).intValue()) != null) {
+			PollBusiness.setPollQuestionID(iwc, ((Integer) poll.getPrimaryKey()).intValue(), ((Integer) pollQuestion.getPrimaryKey()).intValue());
+			System.out.println("Setting pollquestion...");
 		}
 
 		PresentationObject obj = null;
