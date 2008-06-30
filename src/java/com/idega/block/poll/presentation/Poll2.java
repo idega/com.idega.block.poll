@@ -153,13 +153,13 @@ public class Poll2 extends Block implements Builderaware {
 		}
 
 		getMainLayer().add(getPoll(iwc, poll));
-	
+
 		add(getMainLayer());
 	}
 
 	private Layer getAdminPart(int pollID, boolean newObjInst, boolean newWithAttribute) {
 		Image editImage = this._iwb.getImage("shared/edit.gif");
-		
+
 		Link adminLink = new Link(editImage);
 		adminLink.setWindowToOpen(PollAdminWindow.class, this.getICObjectInstanceID());
 		adminLink.addParameter(PollAdminWindow.prmID, pollID);
@@ -173,7 +173,7 @@ public class Poll2 extends Block implements Builderaware {
 		Layer adminPart = new Layer();
 		adminPart.setStyleClass("adminPart");
 		adminPart.addChild(adminLink);
-		
+
 		return adminPart;
 	}
 
@@ -235,13 +235,13 @@ public class Poll2 extends Block implements Builderaware {
 	private Form getRadioButtonView(LocalizedText locText, PollQuestion pollQuestion) {
 		Form form = new Form();
 		form.setWindowToOpen(PollResult.class);
-		
+
 		Paragraph questionParagraph = new Paragraph();
 		questionParagraph.setStyleClass("question");
-		Text question = new Text(locText.getHeadline());				
-		questionParagraph.add(question);		
+		Text question = new Text(locText.getHeadline());
+		questionParagraph.add(question);
 		form.addChild(questionParagraph);
-		
+
 		PollAnswer[] answers = PollBusiness.getAnswers(pollQuestion.getID());
 		boolean hasAnswers = false;	
 		
@@ -364,16 +364,16 @@ public class Poll2 extends Block implements Builderaware {
 					}
 				}
 			}
-			
+
 			if (hasAnswers) {
 				pollContainer.addChild(listOfAnswers);
-			}				
+			}
 			
 		} else { //user has woted, let's show results to user
-			
+
 			listOfAnswers.setStyleClass("results");
 			int total = 0;
-			
+
 			if (answers != null) {
 				if (answers.length > 0) {
 					for (int i = 0; i < answers.length; i++) {
@@ -381,11 +381,11 @@ public class Poll2 extends Block implements Builderaware {
 					}
 					for (int i = 0; i < answers.length; i++) {
 						LocalizedText answerLocText = TextFinder.getLocalizedText(answers[i], this._iLocaleID);
-						
+
 						ListItem listItem = new ListItem();
-						
+
 						if (answerLocText != null) {
-							
+
 							float percent = 0;
 							if (answers[i].getHits() > 0) {
 								percent = ((float) answers[i].getHits() / (float) total) * 100;
@@ -395,33 +395,33 @@ public class Poll2 extends Block implements Builderaware {
 							if (this._showVotes || this._isAdmin) {
 								answerText.addToText(" (" + Integer.toString(answers[i].getHits()) + ")");
 							}
-							Text percentText = new Text(com.idega.util.text.TextSoap.decimalFormat(percent, 1) + "%");							
-							
+							Text percentText = new Text(com.idega.util.text.TextSoap.decimalFormat(percent, 1) + "%");
+
 							Paragraph answerParagraph = new Paragraph();
 							answerParagraph.setStyleClass("answer");
 							answerParagraph.add(answerText);
-							listItem.add(answerParagraph);							
+							listItem.add(answerParagraph);
 
 							Layer barLayer = new Layer();
 							barLayer.setStyleClass("percentageBar");
-							
-							Layer gaugeLayer = new Layer();	
+
+							Layer gaugeLayer = new Layer();
 							gaugeLayer.setStyleClass("percentageLevel");
 							gaugeLayer.setStyleAttribute("width: " + Integer.toString((int) percent) + "%;");
-							
+
 							barLayer.add(gaugeLayer);
-							listItem.add(barLayer);							
-							
+							listItem.add(barLayer);
+
 							Paragraph percentParagraph = new Paragraph();
 							percentParagraph.setStyleClass("percent");
 							percentParagraph.add(percentText);
-							listItem.add(percentParagraph);	
-							
+							listItem.add(percentParagraph);
+
 						}
-					
-						listOfAnswers.add(listItem);						
-					}					
-					pollContainer.addChild(listOfAnswers);					
+
+						listOfAnswers.add(listItem);
+					}
+					pollContainer.addChild(listOfAnswers);
 				}
 				String information = PollBusiness.getLocalizedInformation(pollQuestion.getID(), this._iLocaleID);
 				if (information != null && this._showInformation) {
@@ -430,17 +430,17 @@ public class Poll2 extends Block implements Builderaware {
 					informationParagraph.setStyleClass("information");
 					informationParagraph.add(informationText);
 					pollContainer.addChild(informationParagraph);
-				}				
-			}		
-		}		
+				}
+			}
+		}
 
 		if (this._showCollection) {
 			GenericButton collectionLink = getOlderPollsButton();
 			pollContainer.addChild(collectionLink);
 		}
-		
-		return pollContainer;	
-		
+
+		return pollContainer;
+
 	}
 
 	private GenericButton getOlderPollsButton() {
@@ -586,8 +586,8 @@ public class Poll2 extends Block implements Builderaware {
 		map.put(BUTTON_STYLE, "font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8pt; border: 1px solid #000000;");
 		map.put(RADIO_STYLE, "font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8pt; width: 12px; height: 12px;");
 		map.put(LINK_STYLE, "font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8pt; text-decoration: none;");
-		map.put(LINK_STYLE+":hover", "font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8pt; text-decoration: none;");
-		
+		map.put(LINK_STYLE + ":hover", "font-family: Verdana, Arial, Helvetica, sans-serif; font-size: 8pt; text-decoration: none;");
+
 		return map;
 	}
 
