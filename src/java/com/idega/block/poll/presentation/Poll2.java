@@ -35,6 +35,7 @@ import com.idega.presentation.ui.Parameter;
 import com.idega.presentation.ui.RadioButton;
 import com.idega.presentation.ui.SubmitButton;
 import com.idega.util.IWTimestamp;
+import com.idega.util.PresentationUtil;
 
 public class Poll2 extends Block implements Builderaware {
 
@@ -112,6 +113,7 @@ public class Poll2 extends Block implements Builderaware {
 		this._iwrb = getResourceBundle(iwc);
 		this._iwb = iwc.getIWMainApplication().getBundle(IW_CORE_BUNDLE_IDENTIFIER);
 		this._iwbPoll = getBundle(iwc);
+		PresentationUtil.addStyleSheetToHeader(iwc, _iwb.getVirtualPathWithFileNameString("style/poll.css"));
 
 		this._isAdmin = iwc.hasEditPermission(this);
 		this._iLocaleID = ICLocaleBusiness.getLocaleId(iwc.getCurrentLocale());
