@@ -3,6 +3,7 @@ package com.idega.block.poll.presentation;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.Locale;
+
 import com.idega.block.poll.business.PollBusiness;
 import com.idega.block.poll.business.PollFinder;
 import com.idega.block.poll.data.PollEntity;
@@ -52,6 +53,7 @@ public class PollAdminWindow extends IWAdminWindow {
 		setMethod("get");
 	}
 
+	@Override
 	public void main(IWContext iwc) throws Exception {
 		/**
 		 * @todo permission
@@ -65,7 +67,7 @@ public class PollAdminWindow extends IWAdminWindow {
 		Locale chosenLocale;
 
 		try {
-			this._userID = LoginBusinessBean.getUser(iwc).getID();
+			this._userID = LoginBusinessBean.getUser(iwc).getId();
 		}
 		catch (Exception e) {
 			this._userID = -1;
@@ -333,6 +335,7 @@ public class PollAdminWindow extends IWAdminWindow {
 		addSubmitButton(new CloseButton());
 	}
 
+	@Override
 	public String getBundleIdentifier() {
 		return IW_BUNDLE_IDENTIFIER;
 	}

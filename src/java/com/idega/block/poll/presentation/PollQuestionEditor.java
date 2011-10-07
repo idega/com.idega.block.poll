@@ -53,12 +53,13 @@ public class PollQuestionEditor extends IWAdminWindow {
 
 	}
 
+	@Override
 	public void main(IWContext iwc) throws Exception {
 
 		/**
-		 * 
+		 *
 		 * @todo permission
-		 * 
+		 *
 		 */
 
 		this.isAdmin = true; // AccessControl.hasEditPermission(this,iwc);
@@ -140,7 +141,7 @@ public class PollQuestionEditor extends IWAdminWindow {
 
 		/*
 		 * if ( sLocaleId != null ) {
-		 * 
+		 *
 		 * savePollQuestion(iwc,iLocaleId);
 		 *  }
 		 */
@@ -306,7 +307,7 @@ public class PollQuestionEditor extends IWAdminWindow {
 
 		try {
 
-			_userID = LoginBusinessBean.getUser(iwc).getID();
+			_userID = LoginBusinessBean.getUser(iwc).getId();
 
 		}
 
@@ -350,6 +351,7 @@ public class PollQuestionEditor extends IWAdminWindow {
 
 	}
 
+	@Override
 	public String getBundleIdentifier() {
 
 		return IW_BUNDLE_IDENTIFIER;

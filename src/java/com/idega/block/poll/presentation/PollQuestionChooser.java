@@ -31,6 +31,7 @@ public class PollQuestionChooser extends IWAdminWindow {
 		setHeight(150);
 	}
 
+	@Override
 	public void main(IWContext iwc) throws Exception {
 		/**
 		 * @todo permission
@@ -43,7 +44,7 @@ public class PollQuestionChooser extends IWAdminWindow {
 		Locale chosenLocale;
 
 		try {
-			this.userID = LoginBusinessBean.getUser(iwc).getID();
+			this.userID = LoginBusinessBean.getUser(iwc).getId();
 		}
 		catch (Exception e) {
 			this.userID = -1;
@@ -125,6 +126,7 @@ public class PollQuestionChooser extends IWAdminWindow {
 		close();
 	}
 
+	@Override
 	public String getBundleIdentifier() {
 		return IW_BUNDLE_IDENTIFIER;
 	}
